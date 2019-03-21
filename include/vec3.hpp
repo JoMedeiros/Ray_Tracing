@@ -26,6 +26,8 @@ public:
 	{ return sqrt(e[0]*e[0] + e[1]*e[1]
 		+ e[2]*e[2]); }
 };
+typedef vec3 point3;
+typedef vec3 rgbcolor;
 
 //=== Operators
 inline vec3 operator+
