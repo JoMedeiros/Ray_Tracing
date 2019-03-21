@@ -1,5 +1,7 @@
-#ifndef __UTILS_HPP__
-#define __UTILS_HPP__
+#ifndef _UTILS_HPP_
+#define _UTILS_HPP_
+
+enum {RED, GREEN, BLUE};
 
 struct Point
 {
@@ -71,5 +73,4 @@ struct Color
   }
 };
 
-
-#endif// __UTILS_HPP__
+#endif// _UTILS_HPP_
