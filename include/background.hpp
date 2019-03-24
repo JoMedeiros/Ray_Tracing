@@ -2,7 +2,8 @@
 #define _BACKGROUND_H_
 
 #include <vector>
-#include "utils.hpp"
+#include "vec3.hpp"
+//#include "utils.hpp"
 
 using namespace std;
 
@@ -14,15 +15,37 @@ private:
   int width;
   //void alocate_matrix() {}
 public:
+  // Setters & getters
+  int get_height() const {return height;}
+  int get_width() const {return width;}
 	Background(int height, int width, Color c=Color(0,0,0)) {
+    this->height = height;
+    this->width = width;
     p = new unsigned char**[height];
     for (int i=0; i < height; ++i) {
       p[i] = new unsigned char*[width];
       for (int j=0; j < width; ++j) {
         p[i][j] = new unsigned char[3];
-        p[i][j][RED] = c.r;
-        p[i][j][GREEN] = c.g;
-        p[i][j][BLUE] = c.b;
+        p[i][j][RED] = c[RED];
+        p[i][j][GREEN] = c[GREEN];
+        p[i][j][BLUE] = c[BLUE];
+      }
+    }
+  }
+	Background(int height, int width, Color c00, Color c01, Color c10, Color c11) :
+    Background(height, width) {
+    Color dy1 = (c10 - c00) / (float) height;
+    Color dy2 = (c11 - c01) / (float) height;
+    for (int i=0; i < height; ++i) {
+      Color cy1 = c00 + i * dy1;
+      Color cy2 = c01 + i * dy2;
+      Color dx = (cy2 - cy1) / width;
+      for (int j=0; j < width; ++j) {
+        // @TODO Calculate color
+        Color c = cy1 + j * dx;
+        p[i][j][RED] = c[RED];
+        p[i][j][GREEN] = c[GREEN];
+        p[i][j][BLUE] = c[BLUE];
       }
     }
   }
@@ -34,14 +57,6 @@ public:
         delete[] p[i][j];
       }
       delete[] p[i];
-    }
-  }
-	Background(int height, int width, Color c00, Color c01, Color c10, Color c11){
-    Background(height, width);
-    for (int i=0; i < height; ++i) {
-      for (int j=0; j < width; ++j) {
-        // @TODO Calculate color
-      }
     }
   }
 

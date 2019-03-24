@@ -4,9 +4,10 @@
 #include <math.h>
 #include <stdlib.h>
 
-class vec3
-{
-public:
+enum {RED, GREEN, BLUE};
+
+class vec3 {
+ public:
 	float e[3];
 
 	vec3() {}
@@ -26,8 +27,8 @@ public:
 	{ return sqrt(e[0]*e[0] + e[1]*e[1]
 		+ e[2]*e[2]); }
 };
-typedef vec3 point3;
-typedef vec3 rgbcolor;
+typedef vec3 Point3;
+typedef vec3 Color;
 
 //=== Operators
 inline vec3 operator+
