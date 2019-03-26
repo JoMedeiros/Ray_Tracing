@@ -11,8 +11,6 @@ int main() {
   Color color2(100,150,255);
   Color color3(100,150,255);
   Color color4(100,150,255);
-  Scene sc(ny, nx, color1, color2, color3, color4);
-  sc.render();
 	
 	std::cout << "P3\n" 
 	<< nx << " " << ny 

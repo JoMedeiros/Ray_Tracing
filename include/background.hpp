@@ -5,52 +5,28 @@
 #include "vec3.hpp"
 //#include "utils.hpp"
 
+// @TODO Constructor with image as param
+// Use a library to open, resize images: STD_IMAGE
 using namespace std;
 
 class Background
 {
 private:
-	unsigned char*** p; // Pixel matrix
-  int height;
-  int width;
-  //void alocate_matrix() {}
+  Color c00;
+  Color c01;
+  Color c10;
+  Color c11;
 public:
   // Setters & getters
   int get_height() const {return height;}
   int get_width() const {return width;}
-	Background(int height, int width, Color c=Color(0,0,0)) {
-    this->height = height;
-    this->width = width;
-    p = new unsigned char**[height];
-    for (int i=0; i < height; ++i) {
-      p[i] = new unsigned char*[width];
-      for (int j=0; j < width; ++j) {
-        p[i][j] = new unsigned char[3];
-        p[i][j][RED] = c[RED];
-        p[i][j][GREEN] = c[GREEN];
-        p[i][j][BLUE] = c[BLUE];
-      }
-    }
+	Background( Color c ) : c00(c), c01(c), c10(c), c11(c) { }
+	Background( Color c00, Color c01, Color c10, Color c11 ) {
+    this->c00 = c00;
+    this->c01 = c01;
+    this->c10 = c10;
+    this->c11 = c11;
   }
-	Background(int height, int width, Color c00, Color c01, Color c10, Color c11) :
-    Background(height, width) {
-    Color dy1 = (c10 - c00) / (float) height;
-    Color dy2 = (c11 - c01) / (float) height;
-    for (int i=0; i < height; ++i) {
-      Color cy1 = c00 + i * dy1;
-      Color cy2 = c01 + i * dy2;
-      Color dx = (cy2 - cy1) / width;
-      for (int j=0; j < width; ++j) {
-        // @TODO Calculate color
-        Color c = cy1 + j * dx;
-        p[i][j][RED] = c[RED];
-        p[i][j][GREEN] = c[GREEN];
-        p[i][j][BLUE] = c[BLUE];
-      }
-    }
-  }
-  // @TODO Constructor with image as param
-  // Use a library to open, resize images
   ~Background(){
     for (int i=0; i < height; ++i) {
       for (int j=0; j < width; ++j) {
@@ -59,11 +35,12 @@ public:
       delete[] p[i];
     }
   }
-
-	inline unsigned char** operator[](int i) const 
-	{ return p[i]; }
-	inline unsigned char**& operator[](int i) 
-	{ return p[i]; }
+  Color sample( float u, float v ) {
+    Color cy1 = c00 + v*(c10-c00);
+    Color cy2 = c01 + v*(c11-c01);
+    Color c = cy1 + u*(cy2-cy1);
+    return c;
+  }
 
 };
 
