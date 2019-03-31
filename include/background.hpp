@@ -17,9 +17,6 @@ private:
   Color c10;
   Color c11;
 public:
-  // Setters & getters
-  int get_height() const {return height;}
-  int get_width() const {return width;}
 	Background( Color c ) : c00(c), c01(c), c10(c), c11(c) { }
 	Background( Color c00, Color c01, Color c10, Color c11 ) {
     this->c00 = c00;
@@ -27,21 +24,12 @@ public:
     this->c10 = c10;
     this->c11 = c11;
   }
-  ~Background(){
-    for (int i=0; i < height; ++i) {
-      for (int j=0; j < width; ++j) {
-        delete[] p[i][j];
-      }
-      delete[] p[i];
-    }
-  }
   Color sample( float u, float v ) {
     Color cy1 = c00 + v*(c10-c00);
     Color cy2 = c01 + v*(c11-c01);
     Color c = cy1 + u*(cy2-cy1);
     return c;
   }
-
 };
 
 #endif // _BACKGROUND_H_

@@ -2,11 +2,14 @@
 #include "background.hpp"
 #include "ray.hpp"
 #include "objects.hpp"
-#include "scene.hpp"
+#include "buffer.hpp"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 
-int main() {
+int main( int argc, char *argv[] ) {
 	int nx = 400;
 	int ny = 400;
+  Buffer buffer(nx, ny);
   Color color1(255,255,255);
   Color color2(100,150,255);
   Color color3(100,150,255);
@@ -34,5 +37,6 @@ int main() {
 			std::cout << ir << " " << ig << " " << ib << "\n";
 		}
 	}
+  stbi_write_bmp("arquivo", nx, ny, 3, buffer.data());
 	return EXIT_SUCCESS;
 }
