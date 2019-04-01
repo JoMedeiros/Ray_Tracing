@@ -2,7 +2,7 @@
 #include "background.hpp"
 #include "ray.hpp"
 #include "objects.hpp"
-#include "buffer.hpp"
+#include "buffer.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
