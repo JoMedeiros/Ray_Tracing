@@ -1,4 +1,4 @@
-prefix=/home/josivanmedeiros/Codes/ray-tracing
+prefix=/home/jimmy/Codes/ray-tracing
 exec_prefix=${prefix}
 includedir=${prefix}/include
 libdir=${exec_prefix}/lib

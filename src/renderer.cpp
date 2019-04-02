@@ -4,6 +4,7 @@
 
 void Renderer::run() {
   int nx = buffer->width();
+  cout << 
   int ny = buffer->height();
 	for ( int j = ny-1; j >= 0; --j ) {
 		for ( int i = 0; i < nx; ++i ) {

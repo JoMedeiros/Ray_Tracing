@@ -17,6 +17,8 @@ int setup(Renderer &r) {
     config = YAML::LoadFile("config.yml");
     bg = config["background"];
     camera = config["camera"];
+    width = camera["width"].as<int>();
+    height = camera["height"].as<int>();
     //colors = config["colors"].as<YAML::Node>();
     //scene = config["objects"].as<YAML::Node>();
     r.buffer = new Buffer(width, height);
@@ -27,8 +29,8 @@ int setup(Renderer &r) {
     return -1;
   }
   /* bg = Background(c00, c01, c10,c11);
-  buffer = Buffer(width, height);
   */
+  r.buffer = new Buffer(width, height);
   return 0;
 }
 

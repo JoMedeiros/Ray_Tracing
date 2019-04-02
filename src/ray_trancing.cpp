@@ -17,7 +17,7 @@ int main( int argc, char *argv[] ) {
 	int nx = 600;
 	int ny = 400;
   Renderer render;
-  render.buffer = new Buffer(nx, ny);
+  //render.buffer = new Buffer(nx, ny);
   setup(render);
   render.bg = new Background(Color(0,255,51), Color(255,255,51), Color(255,0,51),
       Color(0,0,51));
@@ -30,8 +30,9 @@ int main( int argc, char *argv[] ) {
 	vec3 vertical(0.0, 2.0, 0.0);
 	Point3 origin(0.0, 0.0, 0.0);
 	
-	for ( int j = ny-1; j >= 0; --j ) {
-		for ( int i = 0; i < nx; ++i ) {
+  render.run();
+	/*for ( int j = render.buffer->height()-1; j >= 0; --j ) {
+		for ( int i = 0; i < render.buffer->width(); ++i ) {
 			float u = float(i) / float(nx), v = float(j) / float(ny);
 
 			ray r(origin, lower_left_corner + u*horizontal + v*vertical);
@@ -47,7 +48,9 @@ int main( int argc, char *argv[] ) {
 
       render.buffer->paint(i, j, col);
 		}
-	}
-  stbi_write_bmp("output.bmp", nx, ny, 3, render.buffer->data());
+	}*/
+  stbi_write_bmp("output.bmp", render.buffer->height(),
+      render.buffer->width(),  
+      3, render.buffer->data());
 	return EXIT_SUCCESS;
 }
