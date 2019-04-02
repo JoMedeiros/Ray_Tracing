@@ -11,27 +11,42 @@ using namespace std;
 class Background
 {
 private:
-  Color c00;
-  Color c01;
-  Color c10;
-  Color c11;
+  //====================
+  // Attributes
+  //====================
+  Color blc; //< bottom left corner
+  Color tlc; //< top left corner
+  Color trc; //< top right corner
+  Color brc;
 public:
-	Background( Color c= Color(0,0,0) ) : c00(c), c01(c), c10(c), c11(c) { }
-	Background( Color c00, Color c01, Color c10, Color c11 ) {
-    this->c00 = c00;
-    this->c01 = c01;
-    this->c10 = c10;
-    this->c11 = c11;
+  //====================
+  // Constructors
+  //====================
+	Background( Color c= Color(0,0,0) ) : blc(c), tlc(c), trc(c), brc(c) { }
+	Background( Color blc, Color tlc, Color trc, Color brc ) {
+    this->blc = blc;
+    this->tlc = tlc;
+    this->trc = trc;
+    this->brc = brc;
   }
+  /**
+   * @brief Copy constructor
+   */
 	Background( Background & other) {
-    c00 = other.c00;
-    c01 = other.c01;
-    c10 = other.c10;
-    c11 = other.c11;
+    blc = other.blc;
+    tlc = other.tlc;
+    trc = other.trc;
+    brc = other.brc;
   }
+  //====================
+  // Methods
+  //====================
+  /**
+   * @brief Returns a color of background corresponding to coordinate (u, v)
+   */
   Color sample( float u, float v ) {
-    Color cy1 = c00 + v*(c10-c00);
-    Color cy2 = c01 + v*(c11-c01);
+    Color cy1 = tlc + v*(blc-tlc);
+    Color cy2 = trc + v*(brc-trc);
     Color c = cy1 + u*(cy2-cy1);
     return c;
   }

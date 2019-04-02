@@ -1,6 +1,9 @@
 #ifndef _OBJECTS_HPP_
 #define _OBJECTS_HPP_
 
+#include "vec3.hpp"
+#include "ray.h"
+
 class Object {
  private:
   //Bounding Box
@@ -58,6 +61,9 @@ vec3 color(const ray& r) {
 			N.y()+1,
 			N.z()+1);
 	}
+  else {
+    return (Color(-1,-1,-1));
+  }
 	//if (hit_sphere(vec3(0,0,-1), 0.5, r))
 	//	return vec3(1, 0, 0);
 

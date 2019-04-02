@@ -49,6 +49,9 @@ inline vec3 operator*(float x, const vec3 &v1)
 { return vec3(v1.e[0] * x, 
 	v1.e[1] * x, v1.e[2] * x); }
 
+inline bool operator==(const vec3 &v1, const vec3 &v2)
+{ return (v1.e[0] == v2.e[0]) and (v1.e[1] == v2.e[1]) and (v1.e[2] == v2.e[2]); }
+
 //=== Operations
 inline float dot(const vec3 &v1, const vec3 &v2)
 { return v1.e[0] * v2.e[0] + v1.e[1] * v2.e[1]
