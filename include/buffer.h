@@ -2,7 +2,7 @@
 #define _BUFFER_H_
 
 #include <vector>
-#include "vec3.hpp"
+#include "vec3.h"
 
 using namespace std;
 typedef unsigned char pixel_type;

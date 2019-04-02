@@ -1,29 +1,34 @@
 #ifndef _SETUP_H_
 #define _SETUP_H_
 
-//#include "yaml-cpp/yaml.h"
-#include "background.h"
-#include "buffer.h"
+#include "renderer.h"
+#include "vec3.h" // Color
+#include "yaml-cpp/yaml.h"
 #include <iostream>
 
-int setup(Background & bg, Buffer & buffer) {
-/*  int width, height;
+/**
+ * @brief Sets the renderer parsing a config.yml file
+ */
+int setup(Renderer &r) {
+  int width=800, height=600;
   Color c00, c01, c10, c11;
-  YAML::Node img, colors, objects;
+  YAML::Node config, bg, camera;
   try {
-    img = YAML::LoadFile("config.yml");
-    width = img["width"].as<int>();
-    height = img["height"].as<int>();
-    colors = img["colors"].as<YAML::Node>();
-    objects = img["objects"].as<YAML::Node>();
+    config = YAML::LoadFile("config.yml");
+    bg = config["background"];
+    camera = config["camera"];
+    //colors = config["colors"].as<YAML::Node>();
+    //scene = config["objects"].as<YAML::Node>();
+    r.buffer = new Buffer(width, height);
   }
   catch (std::exception & e) {
     cout << "Error loading config file:\n";
     cout << e.what() << "\n";
     return -1;
   }
-  bg = Background(c00, c01, c10,c11);
-  buffer = Buffer(width, height);*/
+  /* bg = Background(c00, c01, c10,c11);
+  buffer = Buffer(width, height);
+  */
   return 0;
 }
 

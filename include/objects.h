@@ -1,7 +1,7 @@
 #ifndef _OBJECTS_HPP_
 #define _OBJECTS_HPP_
 
-#include "vec3.hpp"
+#include "vec3.h"
 #include "ray.h"
 
 class Object {

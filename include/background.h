@@ -2,7 +2,7 @@
 #define _BACKGROUND_H_
 
 #include <vector>
-#include "vec3.hpp"
+#include "vec3.h"
 
 // @TODO Constructor with image as param
 // Use a library to open, resize images: STD_IMAGE
@@ -17,7 +17,7 @@ private:
   Color blc; //< bottom left corner
   Color tlc; //< top left corner
   Color trc; //< top right corner
-  Color brc;
+  Color brc; //< bottom right corner
 public:
   //====================
   // Constructors
