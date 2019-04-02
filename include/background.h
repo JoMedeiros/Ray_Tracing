@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "vec3.hpp"
-//#include "utils.hpp"
 
 // @TODO Constructor with image as param
 // Use a library to open, resize images: STD_IMAGE
@@ -17,12 +16,18 @@ private:
   Color c10;
   Color c11;
 public:
-	Background( Color c ) : c00(c), c01(c), c10(c), c11(c) { }
+	Background( Color c= Color(0,0,0) ) : c00(c), c01(c), c10(c), c11(c) { }
 	Background( Color c00, Color c01, Color c10, Color c11 ) {
     this->c00 = c00;
     this->c01 = c01;
     this->c10 = c10;
     this->c11 = c11;
+  }
+	Background( Background & other) {
+    c00 = other.c00;
+    c01 = other.c01;
+    c10 = other.c10;
+    c11 = other.c11;
   }
   Color sample( float u, float v ) {
     Color cy1 = c00 + v*(c10-c00);

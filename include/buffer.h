@@ -24,7 +24,15 @@ public:
   /**
    * @brief Constructs a buffer with height x width pixels (by default a pixel has 3 bytes)
    */
-	Buffer(int height, int width);
+	Buffer(int height=0, int width=0);
+  /**
+   * @brief Copy constructor
+   */
+  Buffer(Buffer & other);
+  /**
+   * @brief Class Destructor
+   */
+  ~Buffer() { delete[] p; }
   /**
    * @brief Saves a color to buffer on the address corresponding to coordinate (x, y)
    */

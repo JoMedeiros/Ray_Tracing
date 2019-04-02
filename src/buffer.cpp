@@ -6,6 +6,7 @@
  * @date  31/03/2019
  */
 #include "buffer.h"
+#include "cstdlib"
 
 Buffer::Buffer(int height, int width) {
   this->_height = height;
@@ -16,6 +17,19 @@ Buffer::Buffer(int height, int width) {
       p[3*(i*width + j) + RED] = 55;
       p[3*(i*width + j) + GREEN] = 155;
       p[3*(i*width + j) + BLUE] = 255;
+    }
+  }
+}
+
+Buffer::Buffer(Buffer & other) {
+  this->_height = other._height;
+  this->_width = other._width;
+  p = (pixel_type*) realloc(p, (_height*_width*3)*sizeof(pixel_type));
+  for (int i=0; i < _height; ++i) {
+    for (int j=0; j < _width; ++j) {
+      p[3*(i*_width + j) + RED] = 55;
+      p[3*(i*_width + j) + GREEN] = 155;
+      p[3*(i*_width + j) + BLUE] = 255;
     }
   }
 }
