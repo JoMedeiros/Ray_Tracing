@@ -23,7 +23,7 @@ public:
   // Constructors
   //====================
 	Background( Color c= Color(0,0,0) ) : blc(c), tlc(c), trc(c), brc(c) { }
-	Background( Color blc, Color tlc, Color trc, Color brc ) {
+	Background( Color trc, Color tlc, Color blc, Color brc ) {
     this->blc = blc;
     this->tlc = tlc;
     this->trc = trc;

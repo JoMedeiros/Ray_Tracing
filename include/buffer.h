@@ -27,8 +27,8 @@ public:
 	Buffer(int height=0, int width=0);
   /**
    * @brief Copy constructor
-   */
-  Buffer(Buffer & other);
+   *
+  Buffer(Buffer & other);*/
   /**
    * @brief Class Destructor
    */

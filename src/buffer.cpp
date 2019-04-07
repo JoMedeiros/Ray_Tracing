@@ -11,17 +11,17 @@
 Buffer::Buffer(int height, int width) {
   this->_height = height;
   this->_width = width;
-  p = new pixel_type[height*height*3];
+  p = new pixel_type[height*width*3];
   for (int i=0; i < height; ++i) {
     for (int j=0; j < width; ++j) {
-      p[3*(i*width + j) + RED] = 55;
-      p[3*(i*width + j) + GREEN] = 155;
-      p[3*(i*width + j) + BLUE] = 255;
+      p[3*(i*width + j) + RED] = 0;
+      p[3*(i*width + j) + GREEN] = 0;
+      p[3*(i*width + j) + BLUE] = 0;
     }
   }
 }
 
-Buffer::Buffer(Buffer & other) {
+/* Buffer::Buffer(Buffer & other) {
   this->_height = other._height;
   this->_width = other._width;
   p = (pixel_type*) realloc(p, (_height*_width*3)*sizeof(pixel_type));
@@ -32,19 +32,19 @@ Buffer::Buffer(Buffer & other) {
       p[3*(i*_width + j) + BLUE] = 255;
     }
   }
-}
+}*/
 
 void Buffer::paint(int x, int y, Color color) {
-  p[3*(x*_width +y) + RED] = color[RED];
-  p[3*(x*_width +y) + GREEN] = color[GREEN];
-  p[3*(x*_width +y) + BLUE] = color[BLUE];
+  p[3*(y*_width +x) + RED] = color[RED];
+  p[3*(y*_width +x) + GREEN] = color[GREEN];
+  p[3*(y*_width +x) + BLUE] = color[BLUE];
 }
 
 Color Buffer::get_color(int x, int y) {
   Color color;
-  color[RED] = p[3*(x*_width + y) + RED];
-  color[GREEN] = p[3*(x*_width + y) + GREEN];
-  color[BLUE] = p[3*(x*_width + y) + BLUE];
+  color[RED] = p[3*(y*_width + x) + RED];
+  color[GREEN] = p[3*(y*_width + x) + GREEN];
+  color[BLUE] = p[3*(y*_width + x) + BLUE];
   return color;
 }
 

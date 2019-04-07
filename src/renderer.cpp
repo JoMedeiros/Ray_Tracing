@@ -4,11 +4,10 @@
 
 void Renderer::run() {
   int nx = buffer->width();
-  cout << 
   int ny = buffer->height();
 	for ( int j = ny-1; j >= 0; --j ) {
 		for ( int i = 0; i < nx; ++i ) {
-			float u = float(i) / float(nx), v = float(j) / float(ny);
+			float v = float(i) / float(nx), u = float(j) / float(ny);
 
       buffer->paint(i, j, bg->sample(u, v));
 			//ray r(origin, lower_left_corner + u*horizontal + v*vertical);
