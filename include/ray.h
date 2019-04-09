@@ -6,25 +6,29 @@
 class Ray
 {
 private:
-	vec3 A;
-	vec3 B;
+	Vec3 A;
+	Vec3 B;
 public:
 	Ray() {}
 	
-	Ray(const vec3& a, const vec3&b)
+	Ray(const Vec3& a, const Vec3&b)
 	{ A = a; B = b; }
 
-	vec3 origin() const
+	Vec3 origin() const
 	{ return A; }
 	
-	vec3 direction() const
+	Vec3 direction() const
 	{ return B; }
+
+  void set_direction(Vec3 v) { B = v; }
+
+  void set_origin(Vec3 v) { A = v; }
 	
-	/*vec3 point_at_parameter(float t) 
+	/*Vec3 point_at_parameter(float t) 
 	{ return A + t*B; }*/
 
-	vec3 point_at_parameter(float t) const
-	{ vec3 v1 = A; vec3 v2 = B;
+	Vec3 point_at_parameter(float t) const
+	{ Vec3 v1 = A; Vec3 v2 = B;
 		return v1 + t*v2; }
 };
 

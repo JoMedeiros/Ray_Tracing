@@ -7,12 +7,12 @@
 #include <iostream>
 
 std::map<std::string, Color> color_table;
-vec3 load_vec(const YAML::Node & node) {
-  vec3 v;
+Vec3 load_vec(const YAML::Node & node) {
+  Vec3 v;
   if (node.Type() == YAML::NodeType::Scalar)// In this case it is a color
     v = color_table[node.as<string>()];
   else if (node.Type() == YAML::NodeType::Sequence)
-    v = vec3(node[0].as<int>(), node[1].as<int>(),
+    v = Vec3(node[0].as<int>(), node[1].as<int>(),
         node[2].as<int>());
   return v;
 }
@@ -59,12 +59,19 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
     height = camera["height"].as<int>();
     Point3 origin = load_vec(camera["position"]);
     Point3 lookat = load_vec(camera["target"]);
+    Point3 vup = load_vec(camera["target"]);
     string type = camera["type"].as<string>();
-    vec3 vup(0,0,1);
     if (type.compare("orthographic") == 0) {
       r.camera = new OrthoCamera( origin, lookat, vup,  height, width );
-    } else {
-      r.camera = new PerspectiveCamera( origin, lookat, vup,  height, width );
+    } 
+    else if (type.compare("orthographic") == 0) {
+      float fd = camera["fdistance"].as<int>();
+      r.camera = new PerspectiveCamera( origin, lookat, vup,
+          height, width, fd);
+    }
+    else {
+      r.camera = new PerspectiveCamera( origin, lookat, vup,  
+          height, width, 1);
     }
   }
   catch (exception & e)

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "renderer.h"
 #include "ray.h"
-#include "objects.h"
+//#include "objects.h"
 #include "common.h"
 #include "background.h"
 #include "buffer.h"

@@ -6,13 +6,18 @@
 
 enum {RED, GREEN, BLUE};
 
-class vec3 {
+class Vec3 {
  public:
 	float e[3];
 
-	vec3() {}
-	vec3(float e0, float e1, float e2) : 
+	Vec3() {}
+	Vec3(float e0, float e1, float e2) : 
 	e{e0,e1,e2} {}
+  Vec3(const Vec3& v) {
+    e[0] = v[0];
+    e[1] = v[1];
+    e[2] = v[2];
+  }
 
 	inline float x() const { return e[0]; }
 	inline float y() const { return e[1]; }
@@ -27,37 +32,40 @@ class vec3 {
 	{ return sqrt(e[0]*e[0] + e[1]*e[1]
 		+ e[2]*e[2]); }
 };
-typedef vec3 Point3;
-typedef vec3 Color;
+typedef Vec3 Point3;
+typedef Vec3 Color;
 
 //=== Operators
-inline vec3 operator+
-(const vec3 &v1, const vec3 &v2)
-{ return vec3(v1.e[0] + v2.e[0], 
-	v1.e[1] + v2.e[1], v1.e[2] + v2.e[2]); }
+inline Vec3 operator-(const Vec3 &v)
+{ return Vec3(-v[0], -v[1], -v[2]); }
 
-inline vec3 operator-
-(const vec3 &v1, const vec3 &v2)
-{ return vec3(v1.e[0] - v2.e[0], 
-	v1.e[1] - v2.e[1], v1.e[2] - v2.e[2]); }
+inline Vec3 operator+(const Vec3 &v1, const Vec3 &v2)
+{ return Vec3(v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]); }
 
-inline vec3 operator/(const vec3 &v1, float x)
-{ return vec3(v1.e[0] / x, 
-	v1.e[1] / x, v1.e[2] / x); }
+inline Vec3 operator-(const Vec3 &v1, const Vec3 &v2)
+{ return Vec3(v1[0] - v2[0], v1[1] - v2[1], v1[2] - v2[2]); }
 
-inline vec3 operator*(float x, const vec3 &v1)
-{ return vec3(v1.e[0] * x, 
-	v1.e[1] * x, v1.e[2] * x); }
+inline Vec3 operator/(const Vec3 &v1, float x)
+{ return Vec3(v1[0] / x, v1[1] / x, v1[2] / x); }
 
-inline bool operator==(const vec3 &v1, const vec3 &v2)
-{ return (v1.e[0] == v2.e[0]) and (v1.e[1] == v2.e[1]) and (v1.e[2] == v2.e[2]); }
+inline Vec3 operator*(float x, const Vec3 &v1)
+{ return Vec3(v1[0] * x, v1[1] * x, v1[2] * x); }
+
+inline bool operator==(const Vec3 &v1, const Vec3 &v2)
+{ return (v1[0] == v2[0]) and (v1[1] == v2[1]) and (v1[2] == v2[2]); }
 
 //=== Operations
-inline float dot(const vec3 &v1, const vec3 &v2)
-{ return v1.e[0] * v2.e[0] + v1.e[1] * v2.e[1]
-	 + v1.e[2] * v2.e[2]; }
+inline float dot(const Vec3 &v1, const Vec3 &v2)
+{ return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]; }
 
-inline vec3 unit_vector(vec3 v)
+inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) { 
+  float s1 = v1[2]*v2[3]-v1[3]*v2[2];
+  float s2 = v1[3]*v2[1]-v1[1]*v2[3];
+  float s3 = v1[1]*v2[2]-v1[2]*v2[1];
+  return Vec3( s1, s2, s3); 
+}
+
+inline Vec3 unit_vector(Vec3 v)
 { return v / v.length(); }
 
 #endif

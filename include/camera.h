@@ -7,17 +7,17 @@
 enum CamType {ORTHO, PERSP};
 class Camera
 {
- private:
+ protected:
   int _height;
   int _width;
   CamType type;
   Point3 _origin;
   Point3 _lookat;
   Point3 lower_left_corner;
-  vec3 horizontal, vertical, _vup;
-  vec3 u, v, w;
+  Vec3 horizontal, vertical, _vup;
+  Vec3 u, v, w;
  public:
-  Camera( Point3 origin, Point3 lookat, vec3 vup, int _h, int _w );
+  Camera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w );
   int height() { return _height; }
   int width() { return _width; }
   virtual Ray generate_ray(int x, int y) = 0;
@@ -25,9 +25,11 @@ class Camera
 };
 
 class PerspectiveCamera : public Camera {
+ private:
+  float fdist;
  public:
-  PerspectiveCamera( Point3 origin, Point3 lookat, vec3 vup, int _h, int _w ) :
-    Camera( origin, lookat, vup, _h, _w ) {}
+  PerspectiveCamera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w, 
+      float fd) : Camera( origin, lookat, vup, _h, _w ), fdist(fd) { }
 
   Ray generate_ray(int x, int y);
   Ray generate_ray(float x, float y);
@@ -35,11 +37,11 @@ class PerspectiveCamera : public Camera {
 
 class OrthoCamera : public Camera {
  public:
-  OrthoCamera( Point3 origin, Point3 lookat, vec3 vup, int _h, int _w ) :
+  OrthoCamera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w ) :
     Camera( origin, lookat, vup, _h, _w ) {}
   Ray generate_ray(int x, int y);
   Ray generate_ray(float x, float y);
 };
 
-
 #endif // _CAMERA_H_
+
