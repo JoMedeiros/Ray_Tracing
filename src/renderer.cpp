@@ -14,7 +14,7 @@ void Renderer::run() {
 			float v = float(i) / float(nx), u = float(j) / float(ny);
 
       buffer->paint(i, j, bg->sample(u, v));
-			//ray r(origin, lower_left_corner + u*horizontal + v*vertical);
+			//Ray r(origin, lower_left_corner + u*horizontal + v*vertical);
 			//vec3 col = color(r);
       //if (col == Color(-1,-1,-1)){
       //  col = bg.sample(u, v);

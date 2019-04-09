@@ -2,6 +2,7 @@
 #define _CAMERA_H_
 
 #include "vec3.h"
+#include "ray.h"
 
 enum CamType {ORTHO, PERSP};
 class Camera
@@ -19,6 +20,26 @@ class Camera
   Camera( Point3 origin, Point3 lookat, vec3 vup, int _h, int _w );
   int height() { return _height; }
   int width() { return _width; }
+  virtual Ray generate_ray(int x, int y) = 0;
+  virtual Ray generate_ray(float x, float y) = 0;
 };
+
+class PerspectiveCamera : public Camera {
+ public:
+  PerspectiveCamera( Point3 origin, Point3 lookat, vec3 vup, int _h, int _w ) :
+    Camera( origin, lookat, vup, _h, _w ) {}
+
+  Ray generate_ray(int x, int y);
+  Ray generate_ray(float x, float y);
+};
+
+class OrthoCamera : public Camera {
+ public:
+  OrthoCamera( Point3 origin, Point3 lookat, vec3 vup, int _h, int _w ) :
+    Camera( origin, lookat, vup, _h, _w ) {}
+  Ray generate_ray(int x, int y);
+  Ray generate_ray(float x, float y);
+};
+
 
 #endif // _CAMERA_H_

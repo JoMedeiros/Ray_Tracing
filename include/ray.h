@@ -3,15 +3,15 @@
 
 #include "vec3.h"
 
-class ray
+class Ray
 {
 private:
 	vec3 A;
 	vec3 B;
 public:
-	ray() {}
+	Ray() {}
 	
-	ray(const vec3& a, const vec3&b)
+	Ray(const vec3& a, const vec3&b)
 	{ A = a; B = b; }
 
 	vec3 origin() const
