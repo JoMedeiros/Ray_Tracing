@@ -7,14 +7,17 @@
 #include <iostream>
 
 std::map<std::string, Color> color_table;
+vec3 load_vec(const YAML::Node & node) {
+  vec3 v;
+  if (node.Type() == YAML::NodeType::Scalar)// In this case it is a color
+    v = color_table[node.as<string>()];
+  else if (node.Type() == YAML::NodeType::Sequence)
+    v = vec3(node[0].as<int>(), node[1].as<int>(),
+        node[2].as<int>());
+  return v;
+}
 Color load_color(const YAML::Node & color_node) {
-  Color color;
-  if (color_node.Type() == YAML::NodeType::Scalar)
-    color = color_table[color_node.as<string>()];
-  else if (color_node.Type() == YAML::NodeType::Sequence)
-    color = Color(color_node[0].as<int>(), color_node[1].as<int>(),
-        color_node[2].as<int>());
-  return color;
+  return load_vec(color_node);
 }
 /**
  * @brief Parses background node in .yml file to set Background object
@@ -22,13 +25,10 @@ Color load_color(const YAML::Node & color_node) {
 void setup_bg(const YAML::Node & bg, Renderer &r){
   try
   {
-    string type = bg["type"].as<string>();
-    if (type.compare("solid") == 0) {
-      auto color = bg["color"];
+    if (YAML::Node color = bg["color"]) {
       r.bg = new Background(load_color(color));
     }
-    else if (type.compare("interpolation") == 0) {
-      auto colors = bg["colors"];
+    else if ( YAML::Node colors = bg["colors"] ) {
       Color colors_arr[4];
       int i = 0;
       for (auto it = colors.begin();it != colors.end();++it) {
@@ -40,6 +40,9 @@ void setup_bg(const YAML::Node & bg, Renderer &r){
       }
       r.bg = new Background(colors_arr[0], colors_arr[1], colors_arr[2], 
           colors_arr[3]);
+    }
+    else {
+      r.bg = new Background(Color(255,255,255));
     }
   }
   catch (exception & e)
@@ -54,7 +57,10 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
     int width=800, height=600;
     width = camera["width"].as<int>();
     height = camera["height"].as<int>();
-    r.camera = new Camera(height, width);
+    Point3 origin = load_vec(camera["position"]);
+    Point3 lookat = load_vec(camera["target"]);
+    vec3 vup(0,0,1);
+    r.camera = new Camera( origin, lookat, vup,  height, width );
   }
   catch (exception & e)
   {

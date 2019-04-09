@@ -1,8 +1,0 @@
-background:
-  type: solid
-  color: [153, 204, 255]
-camera:
-  type: orthographic
-  width: 800
-  height: 600
-

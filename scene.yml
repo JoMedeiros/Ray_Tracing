@@ -1,9 +1,0 @@
-background:
-  type: interpolation
-  colors: [ [51,155,255], [51,0,255], [51,0,255], [51,105,255] ]
-
-camera:
-  type: orthographic
-  width: 800
-  height: 600
-

@@ -3,17 +3,20 @@
 
 #include "vec3.h"
 
+enum CamType {ORTHO, PERSP};
 class Camera
 {
  private:
   int _height;
   int _width;
-  Point3 origin;
+  CamType type;
+  Point3 _origin;
+  Point3 _lookat;
   Point3 lower_left_corner;
-  vec3 horizontal, vertical;
+  vec3 horizontal, vertical, _vup;
   vec3 u, v, w;
  public:
-  Camera(int _h, int _w) : _height(_h),_width(_w){}
+  Camera( Point3 origin, Point3 lookat, vec3 vup, int _h, int _w );
   int height() { return _height; }
   int width() { return _width; }
 };
