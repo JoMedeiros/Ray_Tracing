@@ -3,6 +3,9 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
+
+using namespace std;
 
 enum {RED, GREEN, BLUE};
 
@@ -10,8 +13,8 @@ class Vec3 {
  public:
 	float e[3];
 
-	Vec3() {}
-	Vec3(float e0, float e1, float e2) : 
+	// Vec3() {}
+	Vec3(float e0=0, float e1=0, float e2=0) : 
 	e{e0,e1,e2} {}
   Vec3(const Vec3& v) {
     e[0] = v[0];
@@ -48,20 +51,25 @@ inline Vec3 operator-(const Vec3 &v1, const Vec3 &v2)
 inline Vec3 operator/(const Vec3 &v1, float x)
 { return Vec3(v1[0] / x, v1[1] / x, v1[2] / x); }
 
-inline Vec3 operator*(float x, const Vec3 &v1)
-{ return Vec3(v1[0] * x, v1[1] * x, v1[2] * x); }
+inline Vec3 operator*(float x, const Vec3 &v)
+{ return Vec3(v.e[0] * x, v.e[1] * x, v.e[2] * x); }
 
 inline bool operator==(const Vec3 &v1, const Vec3 &v2)
 { return (v1[0] == v2[0]) and (v1[1] == v2[1]) and (v1[2] == v2[2]); }
+
+inline ostream & operator << (ostream & os, const Vec3 v) {
+  os << "(" << v.x() << ", " << v.y() << ", " << v.z() << ")";
+  return os;
+}
 
 //=== Operations
 inline float dot(const Vec3 &v1, const Vec3 &v2)
 { return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]; }
 
 inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) { 
-  float s1 = v1[2]*v2[3]-v1[3]*v2[2];
-  float s2 = v1[3]*v2[1]-v1[1]*v2[3];
-  float s3 = v1[1]*v2[2]-v1[2]*v2[1];
+  float s1 = (v1[1]*v2[2]) - (v1[2]*v2[1]);
+  float s2 = (v1[2]*v2[0]) - (v1[0]*v2[2]);
+  float s3 = (v1[0]*v2[1]) - (v1[1]*v2[0]);
   return Vec3( s1, s2, s3); 
 }
 

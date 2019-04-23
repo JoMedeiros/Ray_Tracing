@@ -12,6 +12,8 @@ Ray OrthoCamera::generate_ray(int x, int y) {
   Ray r;
   r.set_direction(-w);
   r.set_origin( _origin + x*u + y*v );
+  cout << "r.dir: " << r.direction() << "\n";
+  cout << "r.org: " << r.origin() << "\n";
   return r;
 }
 
@@ -26,6 +28,8 @@ Ray PerspectiveCamera::generate_ray(int x, int y) {
   Ray r;
   r.set_direction( -fdist*w + x*u + y*v );
   r.set_origin( _origin );
+  cout << "r.dir: " << r.direction() << "\n";
+  cout << "r.org: " << r.origin() << "\n";
   return r;
 }
 
@@ -33,6 +37,8 @@ Ray PerspectiveCamera::generate_ray(float x, float y) {
   Ray r;
   r.set_direction( -fdist*w + x*u + y*v );
   r.set_origin( _origin );
+  cout << "r.dir: " << r.direction() << "\n";
+  cout << "r.org: " << r.origin() << "\n";
   return r;
 }
 

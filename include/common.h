@@ -59,7 +59,7 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
     height = camera["height"].as<int>();
     Point3 origin = load_vec(camera["position"]);
     Point3 lookat = load_vec(camera["target"]);
-    Point3 vup = load_vec(camera["target"]);
+    Point3 vup = load_vec(camera["up"]);
     string type = camera["type"].as<string>();
     if (type.compare("orthographic") == 0) {
       r.camera = new OrthoCamera( origin, lookat, vup,  height, width );
