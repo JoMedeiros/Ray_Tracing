@@ -80,9 +80,12 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
     cerr << e.what();
   }
 }
-  /**
-   * @brief Sets the renderer parsing a scene.yml file
-   */
+
+/**
+ * @brief Sets the renderer parsing a scene.yml file
+ * @param r     The Renderer object
+ * @param file  The file name to be parsed
+ */
 int setup(Renderer &r, string file="scene.yml") {
   Color c00, c01, c10, c11;
   YAML::Node config, bg, camera;
@@ -100,6 +103,12 @@ int setup(Renderer &r, string file="scene.yml") {
     throw e;
     return -1;
   }
+  cout <<
+">>> The Camera frame is:\n" <<
+"    u" << r.camera->get_u() << "\n" <<
+"    v" << r.camera->get_v() << "\n" <<
+"    w" << r.camera->get_w() << "\n\n" <<
+"    >>> Parsing scene successfuly done! <<<\n\n";
   return 0;
 }
 

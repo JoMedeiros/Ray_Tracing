@@ -16,10 +16,8 @@ void Renderer::run() {
 
 			//Ray r(origin, lower_left_corner + u*horizontal + v*vertical);
       Ray r = camera->generate_ray(i, j);
-      /*cout << "pixel (" << j << ", " << i << ") " << "ray: [o=("
-        << r.origin()[0] << ", " << r.origin()[1] << ", " << r.origin()[2] 
-        << "), d=(" << r.direction()[0] << ", " << r.direction()[1] << ", "
-        << r.direction()[2] << ")\n";*/
+      cout << "pixel (" << j << ", " << i << ") " 
+        << "ray: [o=" << r.origin() << ", d=" << r.direction() << "\n";
 			Vec3 col = color(r);
       if (col == Color(-1,-1,-1)){
         col = bg->sample(u, v);

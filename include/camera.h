@@ -19,7 +19,11 @@ class Camera
  public:
   Camera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w );
   int height() { return _height; }
+  // Getters
   int width() { return _width; }
+  Vec3 get_u() { return u; }
+  Vec3 get_v() { return v; }
+  Vec3 get_w() { return w; }
   virtual Ray generate_ray(int x, int y) = 0;
   virtual Ray generate_ray(float x, float y) = 0;
 };
