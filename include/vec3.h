@@ -8,6 +8,10 @@
 using namespace std;
 
 enum {RED, GREEN, BLUE};
+//@TODO Implemet Point2f
+class Vec2 {
+};
+typedef Vec2 Point2f;
 
 class Vec3 {
  public:

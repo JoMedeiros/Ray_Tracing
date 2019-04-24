@@ -1,17 +1,46 @@
 #ifndef _OBJECTS_HPP_
 #define _OBJECTS_HPP_
 
+#include <memory>
 #include "vec3.h"
 #include "ray.h"
 
-class Object {
- private:
-  //Bounding Box
+class SurfaceInteraction;
+class Material {};
+
+/**
+ * @brief Abstract class to derive objects.
+ */
+class Primitive {
  public:
-  Object(){}
+  virtual ~Primitive();
+  virtual bool intersect( const Ray& r, SurfaceInteraction *) const = 0;
+  // Simpler & faster version of intersection that only return true/false.
+  // It does not compute the hit point information.
+  virtual bool intersect_p( const Ray& r ) const = 0;
+  virtual const shared_ptr<Material> get_material(void) const { return material; }
+ private:
+  std::shared_ptr<Material> material;
 };
 
-class Sphere : public Object {
+/**
+ * @brief Class to store infromations about a intersection of an object with a ray
+ */
+class SurfaceInteraction {
+public:
+    SurfaceInteraction(const Point3&p,const Vec3&n, const Vec3&wo, float time, const Point2f& uv, const Primitive *pri )
+        : p{p}, n{n}, wo{wo}, time{time}, uv{uv}, primitive{pri}{};
+
+    Point3 p; // Contact point.
+    Vec3 n; // The surface normal.
+    Vec3 wo; // Outgoing direction of light, which is -ray.
+    float time; // Time of contact.
+    Point2f uv; // Parametric coordinate (u,v) of the hit surface.
+    const Primitive *primitive=nullptr; // Point3er to the primitive.
+};
+
+
+class Sphere : public Primitive {
  private:
   Vec3 center;
   float radius;
@@ -37,28 +66,5 @@ class Sphere : public Object {
   }
 };
 
-Vec3 color(const Ray& r) {
-  Sphere s( Vec3(0,0,-1), 5 );
-	float t = s.hit( r );
-	//float t = hit_sphere(Vec3(0,0,-1), 5, r);
-	if (t > 0.0) {
-		Vec3 N = unit_vector( r.point_at_parameter(t) - Vec3(0,0,-1));
-		return 0.5*Vec3(N.x()+1, N.y()+1,	N.z()+1);
-	}
-  else {
-    return (Color(-1,-1,-1));
-  }
-	//if (hit_sphere(Vec3(0,0,-1), 0.5, r))
-	//	return Vec3(1, 0, 0);
-
-	Vec3 unit_direction = 
-	unit_vector(r.direction());
-	
-	t = 0.5 *
-	(unit_direction.y() + 1.0);
-	
-	return (1.0-t)*Vec3(1.0, 1.0, 1.0)
-	+ t*Vec3(0.5, 0.7, 1.0);
-}
 
 #endif// _OBJECTS_HPP_
