@@ -1,5 +1,15 @@
-#include "objects.h"
+#include "sphere.h"
 
+bool Sphere::intersect( const Ray& r, SurfaceInteraction *) {
+}
+/**
+ * @breif
+ * Simpler & faster version of intersection that only return true/false.
+ * It does not compute the hit point information.
+ */
+bool Sphere::intersect_p( const Ray& r ){
+  
+}
 
 Vec3 color(const Ray& r) {
   Sphere s( Vec3(0,0,-1), 5 );

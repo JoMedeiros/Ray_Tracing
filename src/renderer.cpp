@@ -1,6 +1,6 @@
 #include "renderer.h"
 #include "ray.h"
-#include "objects.h"
+#include "sphere.h"
 #include <iostream>
 
 void Renderer::run() {

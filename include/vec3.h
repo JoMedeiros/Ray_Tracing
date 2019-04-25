@@ -1,5 +1,14 @@
-#ifndef _VEC3_H_
-#define _VEC3_H_
+/**
+ * @file	vec3.h
+ * @author	Josivan Medeiros
+ * @version	1
+ * @date
+ * 	Created:	25th Apr 2019
+ * 	Last Update:	25th Apr 2019
+ */
+
+#ifndef VEC3_H
+#define VEC3_H
 
 #include <math.h>
 #include <stdlib.h>
@@ -8,10 +17,6 @@
 using namespace std;
 
 enum {RED, GREEN, BLUE};
-//@TODO Implemet Point2f
-class Vec2 {
-};
-typedef Vec2 Point2f;
 
 class Vec3 {
  public:
@@ -80,4 +85,5 @@ inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) {
 inline Vec3 unit_vector(Vec3 v)
 { return v / v.length(); }
 
-#endif
+#endif // VEC3_H
+
