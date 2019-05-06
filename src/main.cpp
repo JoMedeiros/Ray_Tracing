@@ -2,7 +2,7 @@
 #include "renderer.h"
 #include "ray.h"
 //#include "objects.h"
-#include "common.h"
+#include "load_scene.h"
 #include "background.h"
 #include "buffer.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -14,6 +14,10 @@ int main( int argc, char *argv[] ) {
   Renderer render;
   if (argc > 1){
     filename = argv[1];
+  }
+  else {
+    cout << "Missing arguments\nHow to use:\n" << argv[0] 
+      << " <filename>.yml\n";
   }
   cout <<
 " +=========================================+\n" <<

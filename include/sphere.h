@@ -14,6 +14,7 @@
 #include "primitive.h"
 #include "vec3.h"
 #include "ray.h"
+#include "surfaceInteraction.h"
 
 class Sphere : public Primitive {
  private:
@@ -28,6 +29,8 @@ class Sphere : public Primitive {
    * @brief Returns the t param, the distance from ray's origin and 
    * intersection point
    */
+  bool intersect( const Ray& r, SurfaceInteraction *s) const;
+  bool intersect_p( const Ray& r ) const;
   float hit(const Ray& r) {
     Vec3 oc = r.origin() - center;
     float a = dot(r.direction(), r.direction());

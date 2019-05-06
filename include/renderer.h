@@ -3,7 +3,8 @@
 
 #include "buffer.h"
 #include "background.h"
-#include "camera.h"
+#include "orthoCamera.h"
+#include "perspectiveCamera.h"
 
 class Renderer 
 {

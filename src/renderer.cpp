@@ -3,6 +3,8 @@
 #include "sphere.h"
 #include <iostream>
 
+using namespace std;
+
 void Renderer::run() {
   int nx = buffer->width();
   int ny = buffer->height();
@@ -18,15 +20,7 @@ void Renderer::run() {
       Ray r = camera->generate_ray(i, j);
       cout << "pixel (" << j << ", " << i << ") " 
         << "ray: [o=" << r.origin() << ", d=" << r.direction() << "\n";
-			Vec3 col = color(r);
-      if (col == Color(-1,-1,-1)){
-        col = bg->sample(u, v);
-      }
-      else {
-        int ir = int(255.99*col[0]), ig = int(255.99*col[1]);
-        int ib = int(255.99*col[2]);
-        col = Color(ir,ig,ib);
-      }
+      Color col = bg->sample(u, v);
       buffer->paint( i, j, col );
       //buffer->paint(i, j, bg->sample(u, v));
 

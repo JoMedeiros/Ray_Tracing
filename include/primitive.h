@@ -20,12 +20,12 @@
  */
 class Primitive {
  public:
-  virtual ~Primitive();
+  virtual ~Primitive(){};
   virtual bool intersect( const Ray& r, SurfaceInteraction *) const = 0;
   // Simpler & faster version of intersection that only return true/false.
   // It does not compute the hit point information.
   virtual bool intersect_p( const Ray& r ) const = 0;
-  virtual const shared_ptr<Material> get_material(void) const 
+  const shared_ptr<Material> get_material(void) const 
   { return material; }
  private:
   std::shared_ptr<Material> material;

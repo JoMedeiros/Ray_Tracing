@@ -1,3 +1,11 @@
+/**
+ * @file	common.h
+ * @author	Josivan Medeiros
+ * @version	1
+ * @date
+ * 	Created:	25th Apr 2019
+ * 	Last Update:	5th May 2019
+ */
 #ifndef _SETUP_H_
 #define _SETUP_H_
 
@@ -61,7 +69,14 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
     Point3 lookat = load_vec(camera["target"]);
     Point3 vup = load_vec(camera["up"]);
     string type = camera["type"].as<string>();
+  //vpdim: [ -3, 3, -2.25, 2.25 ]  # View plane dimensions [left right bottom top] -->
     if (type.compare("orthographic") == 0) {
+      double left, right, bottom, top;
+      auto dims = camera["vpdim"];
+      left = dims[0].as<double>();
+      right = dims[1].as<double>();
+      bottom = dims[2].as<double>();
+      top = dims[3].as<double>();
       r.camera = new OrthoCamera( origin, lookat, vup,  height, width );
     } 
     else if (type.compare("orthographic") == 0) {
