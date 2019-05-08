@@ -69,7 +69,6 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
     Point3 lookat = load_vec(camera["target"]);
     Point3 vup = load_vec(camera["up"]);
     string type = camera["type"].as<string>();
-  //vpdim: [ -3, 3, -2.25, 2.25 ]  # View plane dimensions [left right bottom top] -->
     if (type.compare("orthographic") == 0) {
       double left, right, bottom, top;
       auto dims = camera["vpdim"];
@@ -77,7 +76,8 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
       right = dims[1].as<double>();
       bottom = dims[2].as<double>();
       top = dims[3].as<double>();
-      r.camera = new OrthoCamera( origin, lookat, vup,  height, width );
+      r.camera = new OrthoCamera( origin, lookat, vup, left, right, 
+          bottom, top);
     } 
     else if (type.compare("orthographic") == 0) {
       float fd = camera["fdistance"].as<int>();
@@ -88,6 +88,8 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
       r.camera = new PerspectiveCamera( origin, lookat, vup,  
           height, width, 1);
     }
+    cout << "Initializing buffer...\n";
+    r.buffer = new Buffer(height, width);
   }
   catch (exception & e)
   {
@@ -108,9 +110,11 @@ int setup(Renderer &r, string file="scene.yml") {
     config = YAML::LoadFile(file);
     bg = config["background"];
     camera = config["camera"];
+    cout << "Initializing background...\n";
     setup_bg(bg, r);
+    cout << "Initializing camera...\n";
     setup_camera(camera, r);
-    r.buffer = new Buffer(r.camera->height(), r.camera->width());
+    cout << "Buffer complete...\n";
   }
   catch (std::exception & e) {
     cout << "Error loading config file:\n";

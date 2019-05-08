@@ -12,9 +12,14 @@
 #include "camera.h"
 
 class OrthoCamera : public Camera {
+ private:
+   double _left;
+   double _right;
+   double _bottom;
+   double _top;
  public:
-  OrthoCamera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w ) :
-    Camera( origin, lookat, vup, _h, _w ) {}
+  OrthoCamera( Point3 origin, Point3 lookat, Vec3 vup, double left, double right, 
+      double bottom, double top );
   Ray generate_ray(int x, int y);
   Ray generate_ray(float x, float y);
 };

@@ -14,10 +14,10 @@ void Renderer::run() {
 	//Point3 origin(0.0, 0.0, 0.0);
 	for ( int j = ny-1; j >= 0; --j ) {
 		for ( int i = 0; i < nx; ++i ) {
-			float v = float(i) / float(nx), u = float(j) / float(ny);
+			float v = float(i+0.5) / float(nx), u = float(j+0.5) / float(ny);
 
 			//Ray r(origin, lower_left_corner + u*horizontal + v*vertical);
-      Ray r = camera->generate_ray(i, j);
+      Ray r = camera->generate_ray(v, u);
       cout << "pixel (" << j << ", " << i << ") " 
         << "ray: [o=" << r.origin() << ", d=" << r.direction() << "\n";
       Color col = bg->sample(u, v);
