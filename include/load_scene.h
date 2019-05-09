@@ -79,14 +79,12 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
       r.camera = new OrthoCamera( origin, lookat, vup, left, right, 
           bottom, top);
     } 
-    else if (type.compare("orthographic") == 0) {
-      float fd = camera["fdistance"].as<int>();
-      r.camera = new PerspectiveCamera( origin, lookat, vup,
-          height, width, fd);
-    }
-    else {
+    else if (type.compare("perspective") == 0) {
+      double fd = camera["fdistance"].as<double>();
+      double fovy = camera["fovy"].as<double>();
+      double aspect_ratio = camera["aspect"].as<double>();
       r.camera = new PerspectiveCamera( origin, lookat, vup,  
-          height, width, 1);
+          fovy, aspect_ratio, fd);
     }
     cout << "Initializing buffer...\n";
     r.buffer = new Buffer(height, width);

@@ -19,5 +19,8 @@ make
 - [ ] Scene Parser 
 - [ ] Background
 - [ ] Camera
+  - [x] OrthoCamera
+  - [ ] PerspectiveCamera
+- [ ] Sphere
 - [ ] main loop
 

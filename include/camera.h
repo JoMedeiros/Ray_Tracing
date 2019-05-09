@@ -22,8 +22,7 @@ class Camera
   int _width;
   Point3 _origin;
   Point3 _lookat;
-  Point3 lower_left_corner;
-  Vec3 horizontal, vertical, _vup;
+  Vec3 _vup;
   Vec3 u, v, w;
  public:
   Camera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w );

@@ -18,8 +18,8 @@ void Renderer::run() {
 
 			//Ray r(origin, lower_left_corner + u*horizontal + v*vertical);
       Ray r = camera->generate_ray(v, u);
-      cout << "pixel (" << j << ", " << i << ") " 
-        << "ray: [o=" << r.origin() << ", d=" << r.direction() << "\n";
+      //cout << "pixel (" << j << ", " << i << ") " 
+        //<< "ray: [o=" << r.origin() << ", d=" << r.direction() << "\n";
       Color col = bg->sample(u, v);
       buffer->paint( i, j, col );
       //buffer->paint(i, j, bg->sample(u, v));

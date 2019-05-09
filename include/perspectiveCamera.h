@@ -18,12 +18,14 @@
 class PerspectiveCamera : public Camera {
  private:
   float fdist;
-  Point3 _lower_left_corner;
+  Point3 lower_left_corner;
+  Vec3 horizontal;
+  Vec3 vertical;
  public:
   PerspectiveCamera( Point3 origin, Point3 lookat, 
-    Vec3 vup, double fovy, double aspect_ratio, double fd);
-  PerspectiveCamera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w, 
-      float fd) : Camera( origin, lookat, vup, _h, _w ), fdist(fd) { }
+  Vec3 vup, double fovy, double aspect_ratio, double fd);
+  //PerspectiveCamera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w, 
+  //    float fd) : Camera( origin, lookat, vup, _h, _w ), fdist(fd) { }
 
   Ray generate_ray(int x, int y);
   Ray generate_ray(float x, float y);

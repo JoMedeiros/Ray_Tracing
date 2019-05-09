@@ -13,10 +13,25 @@ camera:
   target: [ 0, 0, -10 ] # looking down the -Z axis 
   up: [ 0, 1, 1 ]       # the camera's up vector 
   #--- Specific parameters for perspective projection 
-  fovy: 45.0            # The vertical field of view 
+  fovy: 65.0            # The vertical field of view 
   aspect: 1.33          # Optional parameter, aspect ration W/H 
   fdistance: 1          # The focal distance  
   #--- Retina/image dimensions 
-  width: 40
-  height: 30
+  width: 800
+  height: 600
+scene:
+  - type: "sphere"
+    name: "sphere1"
+    radius: 0.4
+    center: [ -1.0, 0.5, -5 ]
+
+  - type: "sphere"
+    name: "sphere2"
+    radius: 0.4
+    center: [ 1.0, -0.5, -8 ]
+
+  - type: "sphere" 
+    name: "sphere3"
+    radius: 0.4
+    center: [ -1.0, -1.5, -3.5 ]
 
