@@ -10,7 +10,7 @@ camera:
   type: "perspective"
   # The camera frame 
   position: [ 0, 0, 0 ] # located at the origin 
-  target: [ 0, 0, -10 ] # looking down the -Z axis 
+  target: [ 0, 0, -10.0 ] # looking down the -Z axis 
   up: [ 0, 1, 1 ]       # the camera's up vector 
   #--- Specific parameters for perspective projection 
   fovy: 65.0            # The vertical field of view 
@@ -23,15 +23,20 @@ scene:
   - type: "sphere"
     name: "sphere1"
     radius: 0.4
-    center: [ -1.0, 0.5, -5 ]
+    center: [ -1.0, 0.5, -5.0]
 
   - type: "sphere"
     name: "sphere2"
     radius: 0.4
-    center: [ 1.0, -0.5, -8 ]
+    center: [ 1.0, -0.5, -8.0 ]
 
   - type: "sphere" 
     name: "sphere3"
     radius: 0.4
     center: [ -1.0, -1.5, -3.5 ]
+
+    #  - type: "sphere" 
+    #    name: "sphere3"
+    #    radius: 0.4
+    #    center: [ 2, 0, -3.5 ]
 

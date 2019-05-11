@@ -9,29 +9,33 @@
 #include "perspectiveCamera.h"
 
 PerspectiveCamera::PerspectiveCamera( Point3 origin, Point3 lookat, 
-    Vec3 vup, double fovy, double aspect_ratio, double fd) : 
-    Camera( origin, lookat, vup, 400, 600 ), fdist(fd) 
-{
+    Vec3 vup, float fovy, float aspect_ratio, float fd) : 
+    Camera( origin, lookat, vup, 400, 600 ), fdist(fd) {
   _origin = origin;
   _lookat = lookat;
-  w = unit_vector(origin - lookat);
-  u = unit_vector(cross(vup, w));
-  v = cross(w, u);
+  w = unit_vector( origin - lookat );
+  u = unit_vector( cross( vup, w ) );
+  v = unit_vector( cross( w, u ) );
 
-  double theta = fovy * M_PI / 180;
-  double mid_height = tan(theta / 2);
-  double mid_width = aspect_ratio * mid_height;
-  lower_left_corner = origin  - mid_width*fd*u - mid_height*fd*v - fd*w;
+  float theta = fovy * M_PI / 180;
+  float hh = tan(theta / 2) * fd; // half hight of the screen
+  cout << "Half Height: " << hh << "\n";
+  float hw = aspect_ratio * hh; // half width of the screen
+  cout << "Half Width: " << hw << "\n";
+  lower_left_corner = origin  - fd*w  - hw*u - hh*v;
 
-  horizontal = 2*mid_width*fd*u;
-  vertical = 2*mid_height*fd*v;
+  cout << "LLC: " << lower_left_corner << "\n";
+  // llc + horizontal = lower right corner
+  horizontal = 2*hw*u; // Total horizontal vector
+  // llc + vertical = top left corner
+  vertical = 2*hh*v; // Total vertical vector
 }
 
 Ray PerspectiveCamera::generate_ray(int x, int y) {
   Ray r;
   r.set_direction( 
-      unit_vector( 
-        lower_left_corner + (-fdist*w + x*u + y*v )));
+      // unit_vector( -(fdist)*w+ x*u+y*v));
+      unit_vector( lower_left_corner + x*u + y*v ));
   r.set_origin( _origin );
   return r;
 }
@@ -39,8 +43,8 @@ Ray PerspectiveCamera::generate_ray(int x, int y) {
 Ray PerspectiveCamera::generate_ray(float x, float y) {
   Ray r;
   r.set_direction( 
-      unit_vector( 
-       lower_left_corner + x*horizontal + y*vertical ));
+      // unit_vector( (lower_left_corner + x*horizontal - y*vertical) - _origin));
+      unit_vector( -(fdist)*w+ (x-0.5)*horizontal-(y-0.5)*vertical));
   r.set_origin( _origin );
   return r;
 }

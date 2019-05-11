@@ -23,9 +23,7 @@ class PerspectiveCamera : public Camera {
   Vec3 vertical;
  public:
   PerspectiveCamera( Point3 origin, Point3 lookat, 
-  Vec3 vup, double fovy, double aspect_ratio, double fd);
-  //PerspectiveCamera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w, 
-  //    float fd) : Camera( origin, lookat, vup, _h, _w ), fdist(fd) { }
+  Vec3 vup, float fovy, float aspect_ratio, float fd);
 
   Ray generate_ray(int x, int y);
   Ray generate_ray(float x, float y);

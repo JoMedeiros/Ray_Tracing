@@ -12,9 +12,9 @@
 
 class Vec2 {
 public:
-  double e[2];
-  double x() { return e[0]; }
-  double y() { return e[1]; }
+  float e[2];
+  float x() { return e[0]; }
+  float y() { return e[1]; }
 };
 typedef Vec2 Point2f;
 

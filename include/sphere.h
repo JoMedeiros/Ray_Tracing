@@ -26,22 +26,16 @@ class Sphere : public Primitive {
    */
   Sphere(Vec3 _center, float _radius): center(_center), radius(_radius) {}
   /**
-   * @brief Returns the t param, the distance from ray's origin and 
-   * intersection point
+   * @brief Returns true if the ray `r` intersects the sphere and
+   * false otherwise. Also initialize the values of SurfaceInteraction
+   * pointer `s` for the intersection.
    */
   bool intersect( const Ray& r, SurfaceInteraction *s) const;
+  /**
+   * @brief Returns true if the ray `r` intersects the sphere and
+   * false otherwise
+   */
   bool intersect_p( const Ray& r ) const;
-  float hit(const Ray& r) {
-    Vec3 oc = r.origin() - center;
-    float a = dot(r.direction(), r.direction());
-    float b = 2.0 * dot(oc, r.direction());
-    float c = dot(oc, oc) - radius*radius;
-    float D = b*b - 4*a*c;
-    if (D < 0)
-      return -1.0;
-    else
-      return (-b - sqrt(D)) / (2.0*a);
-  }
 };
 
 #endif// SPHERE_H

@@ -11,7 +11,7 @@ private:
 public:
 	Ray() {}
 	
-	Ray(const Vec3& a, const Vec3&b)
+	Ray(const Point3& a, const Vec3&b)
 	{ A = a; B = b; }
 
 	Vec3 origin() const
@@ -31,5 +31,9 @@ public:
 	{ Vec3 v1 = A; Vec3 v2 = B;
 		return v1 + t*v2; }
 };
+inline ostream & operator << (ostream & os, const Ray ray) {
+  os << "ray: [o=" << ray.origin() << ", d=" << ray.direction() << "]";
+  return os;
+}
 
 #endif

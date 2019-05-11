@@ -6,26 +6,26 @@
 using namespace std;
 
 void Renderer::run() {
-  int nx = buffer->width();
-  int ny = buffer->height();
-	Point3 lower_left_corner(-1.0, -1.0, -1.0);
-	//Vec3 horizontal(3.0, 0.0, 0.0);
-	//Vec3 vertical(0.0, 2.0, 0.0);
-	//Point3 origin(0.0, 0.0, 0.0);
-	for ( int j = ny-1; j >= 0; --j ) {
-		for ( int i = 0; i < nx; ++i ) {
-			float v = float(i+0.5) / float(nx), u = float(j+0.5) / float(ny);
-
-			//Ray r(origin, lower_left_corner + u*horizontal + v*vertical);
-      Ray r = camera->generate_ray(v, u);
-      //cout << "pixel (" << j << ", " << i << ") " 
-        //<< "ray: [o=" << r.origin() << ", d=" << r.direction() << "\n";
-      Color col = bg->sample(u, v);
-      buffer->paint( i, j, col );
-      //buffer->paint(i, j, bg->sample(u, v));
-
-      //render.buffer->paint(i, j, col);
+  int w = buffer->width();
+  int h = buffer->height();
+	for ( int j = h-1; j >= 0; --j ) {
+		for ( int i = 0; i < w; ++i ) {
+			float v = float(i+0.5) / float(w), u = float(j+0.5) / float(h);
+      Ray ray = camera->generate_ray(v, u);
+      //Ray ray = camera->generate_ray( float(i)/float(w), 
+          //float(j)/ float(h));
+      cout << "pixel (" << j << ", " << i << ") " 
+        << "ray: " << ray << "\n";
+      Color color = bg->sample(u, v);
+      for ( Primitive*& p : primitives ) {
+        if ( p->intersect_p( ray ) )
+            color = Color(255, 0, 0);
+      }
+      buffer->paint( i, j, color );
 		}
 	}
+}
+void Renderer::add_primitive(Sphere* sp){
+  primitives.push_back(sp);
 }
 

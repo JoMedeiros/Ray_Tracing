@@ -27,9 +27,12 @@ class Camera
  public:
   Camera( Point3 origin, Point3 lookat, Vec3 vup, int _h, int _w );
   //virtual ~Camera(){};
-  int height() { return _height; }
   // Getters
+  int height() { return _height; }
   int width() { return _width; }
+  // Setters
+  void set_height(int h) { _height = h; }
+  void set_width(int w) { _width = w; }
   Vec3 get_u() { return u; }
   Vec3 get_v() { return v; }
   Vec3 get_w() { return w; }

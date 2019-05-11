@@ -19,9 +19,10 @@ Vec3 load_vec(const YAML::Node & node) {
   Vec3 v;
   if (node.Type() == YAML::NodeType::Scalar)// In this case it is a color
     v = color_table[node.as<string>()];
-  else if (node.Type() == YAML::NodeType::Sequence)
-    v = Vec3(node[0].as<int>(), node[1].as<int>(),
-        node[2].as<int>());
+  else if (node.Type() == YAML::NodeType::Sequence) {
+    v = Vec3(node[0].as<float>(), node[1].as<float>(),
+        node[2].as<float>());
+  }
   return v;
 }
 Color load_color(const YAML::Node & color_node) {
@@ -59,6 +60,9 @@ void setup_bg(const YAML::Node & bg, Renderer &r){
     cerr << e.what();
   }
 }
+/**
+ * @brief Sets the camera
+ */
 void setup_camera(const YAML::Node & camera, Renderer &r) {
   try
   {
@@ -70,19 +74,19 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
     Point3 vup = load_vec(camera["up"]);
     string type = camera["type"].as<string>();
     if (type.compare("orthographic") == 0) {
-      double left, right, bottom, top;
+      float left, right, bottom, top;
       auto dims = camera["vpdim"];
-      left = dims[0].as<double>();
-      right = dims[1].as<double>();
-      bottom = dims[2].as<double>();
-      top = dims[3].as<double>();
+      left = dims[0].as<float>();
+      right = dims[1].as<float>();
+      bottom = dims[2].as<float>();
+      top = dims[3].as<float>();
       r.camera = new OrthoCamera( origin, lookat, vup, left, right, 
           bottom, top);
     } 
     else if (type.compare("perspective") == 0) {
-      double fd = camera["fdistance"].as<double>();
-      double fovy = camera["fovy"].as<double>();
-      double aspect_ratio = camera["aspect"].as<double>();
+      float fd = camera["fdistance"].as<float>();
+      float fovy = camera["fovy"].as<float>();
+      float aspect_ratio = camera["aspect"].as<float>();
       r.camera = new PerspectiveCamera( origin, lookat, vup,  
           fovy, aspect_ratio, fd);
     }
@@ -95,38 +99,52 @@ void setup_camera(const YAML::Node & camera, Renderer &r) {
     cerr << e.what();
   }
 }
-
+/**
+ * @brief Sets the scene
+ */
+void setup_scene(const YAML::Node & scene, Renderer &r) {
+  for (auto obj = scene.begin(); obj != scene.end(); ++obj) {
+    string type = (*obj)["type"].as<string>();
+    if (type.compare("sphere") == 0) {
+      string name = (*obj)["name"].as<string>();
+      float radius = (*obj)["radius"].as<float>();
+      Vec3 center = load_vec((*obj)["center"]);
+      Sphere* sp = new Sphere(center, radius);
+      r.add_primitive(sp);
+    }
+  }
+}
 /**
  * @brief Sets the renderer parsing a scene.yml file
  * @param r     The Renderer object
  * @param file  The file name to be parsed
  */
-int setup(Renderer &r, string file="scene.yml") {
+void setup(Renderer &r, string file="scene.yml") {
   Color c00, c01, c10, c11;
-  YAML::Node config, bg, camera;
+  YAML::Node config, bg, camera, scene;
   try {
     config = YAML::LoadFile(file);
     bg = config["background"];
     camera = config["camera"];
+    scene = config["scene"];
     cout << "Initializing background...\n";
     setup_bg(bg, r);
     cout << "Initializing camera...\n";
     setup_camera(camera, r);
     cout << "Buffer complete...\n";
+    setup_scene(scene, r);
   }
   catch (std::exception & e) {
     cout << "Error loading config file:\n";
     cout << e.what() << "\n";
     throw e;
-    return -1;
   }
   cout <<
-">>> The Camera frame is:\n" <<
-"    u" << r.camera->get_u() << "\n" <<
-"    v" << r.camera->get_v() << "\n" <<
-"    w" << r.camera->get_w() << "\n\n" <<
-"    >>> Parsing scene successfuly done! <<<\n\n";
-  return 0;
+    ">>> The Camera frame is:\n" <<
+    "    u" << r.camera->get_u() << "\n" <<
+    "    v" << r.camera->get_v() << "\n" <<
+    "    w" << r.camera->get_w() << "\n\n" <<
+    "    >>> Parsing scene successfuly done! <<<\n\n";
 }
 
 #endif// _SETUP_H_

@@ -20,10 +20,10 @@ enum {RED, GREEN, BLUE};
 
 class Vec3 {
  public:
-	double e[3];
+	float e[3];
 
 	// Vec3() {}
-	Vec3(double e0=0, double e1=0, double e2=0) : 
+	Vec3(float e0=0, float e1=0, float e2=0) : 
 	e{e0,e1,e2} {}
   Vec3(const Vec3& v) {
     e[0] = v[0];
@@ -31,16 +31,16 @@ class Vec3 {
     e[2] = v[2];
   }
 
-	inline double x() const { return e[0]; }
-	inline double y() const { return e[1]; }
-	inline double z() const { return e[2]; }
+	inline float x() const { return e[0]; }
+	inline float y() const { return e[1]; }
+	inline float z() const { return e[2]; }
 	
-	inline double operator[](int i) const 
+	inline float operator[](int i) const 
 	{ return e[i]; }
-	inline double& operator[](int i) 
+	inline float& operator[](int i) 
 	{ return e[i]; }
 
-	inline double length() const
+	inline float length() const
 	{ return sqrt(e[0]*e[0] + e[1]*e[1]
 		+ e[2]*e[2]); }
 };
@@ -57,10 +57,10 @@ inline Vec3 operator+(const Vec3 &v1, const Vec3 &v2)
 inline Vec3 operator-(const Vec3 &v1, const Vec3 &v2)
 { return Vec3(v1[0] - v2[0], v1[1] - v2[1], v1[2] - v2[2]); }
 
-inline Vec3 operator/(const Vec3 &v1, double x)
+inline Vec3 operator/(const Vec3 &v1, float x)
 { return Vec3(v1[0] / x, v1[1] / x, v1[2] / x); }
 
-inline Vec3 operator*(double x, const Vec3 &v)
+inline Vec3 operator*(float x, const Vec3 &v)
 { return Vec3(v.e[0] * x, v.e[1] * x, v.e[2] * x); }
 
 inline bool operator==(const Vec3 &v1, const Vec3 &v2)
@@ -72,13 +72,13 @@ inline ostream & operator << (ostream & os, const Vec3 v) {
 }
 
 //=== Operations
-inline double dot(const Vec3 &v1, const Vec3 &v2)
+inline float dot(const Vec3 &v1, const Vec3 &v2)
 { return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]; }
 
 inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) { 
-  double s1 = (v1[1]*v2[2]) - (v1[2]*v2[1]);
-  double s2 = (v1[2]*v2[0]) - (v1[0]*v2[2]);
-  double s3 = (v1[0]*v2[1]) - (v1[1]*v2[0]);
+  float s1 = (v1[1]*v2[2]) - (v1[2]*v2[1]);
+  float s2 = (v1[2]*v2[0]) - (v1[0]*v2[2]);
+  float s3 = (v1[0]*v2[1]) - (v1[1]*v2[0]);
   return Vec3( s1, s2, s3); 
 }
 

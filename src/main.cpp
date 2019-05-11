@@ -1,7 +1,6 @@
 #include <iostream>
 #include "renderer.h"
 #include "ray.h"
-//#include "objects.h"
 #include "load_scene.h"
 #include "background.h"
 #include "buffer.h"
@@ -40,7 +39,7 @@ int main( int argc, char *argv[] ) {
 "    Ray tracing is usually a slow process, please be patient: \n";
 
   render.run();
-  stbi_write_bmp("output.bmp", render.buffer->width(), 
-      render.buffer->height(), 3, render.buffer->data());
+  stbi_write_png("output.png", render.buffer->width(), 
+      render.buffer->height(), 3, render.buffer->data(), 3*render.buffer->width());
 	return EXIT_SUCCESS;
 }
