@@ -14,7 +14,14 @@
 
 SurfaceInteraction::SurfaceInteraction(const Point3&p,const Vec3&n, 
     const Vec3&wo, float time, const Point2f& uv, const Primitive *pri )
-  : p{p}, n{n}, wo{wo}, time{time}, uv{uv}, primitive{pri}{};
+{
+  this->p = p;
+  this->n = n;
+  this->wo = wo;
+  this->time = time;
+  this->uv = uv;
+  this->primitive = pri;
+};
 
 /*===========================================================================*/
 /*================================[ Methods ]================================*/

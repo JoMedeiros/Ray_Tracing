@@ -8,6 +8,8 @@ using namespace std;
 void Renderer::run() {
   int w = buffer->width();
   int h = buffer->height();
+  float a = 0.25;
+  Color mat = Color(0,175, 125);
 	for ( int j = h-1; j >= 0; --j ) {
 		for ( int i = 0; i < w; ++i ) {
 			float v = float(i+0.5) / float(w), u = float(j+0.5) / float(h);
@@ -18,8 +20,14 @@ void Renderer::run() {
         << "ray: " << ray << "\n";
       Color color = bg->sample(u, v);
       for ( Primitive*& p : primitives ) {
-        if ( p->intersect_p( ray ) )
-            color = Color(255, 0, 0);
+        SurfaceInteraction* s = new SurfaceInteraction();
+        bool hit = p->intersect( ray, s );
+        if ( hit ){
+          color = 0.5*255.0*(Vec3(1,1,1) + s->n);
+          float m = dot(s->n, camera->get_w());
+          color = (m+a)*mat;
+            //cout << "Normal: " << s->n.x();
+        }
       }
       buffer->paint( i, j, color );
 		}

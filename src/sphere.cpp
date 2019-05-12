@@ -3,12 +3,20 @@
 bool Sphere::intersect( const Ray& r, SurfaceInteraction *s) const {
   Vec3 oc = r.origin() - center;
   float a = dot(r.direction(), r.direction());
-  float b = dot(oc, r.direction());
+  float b = 2*dot(oc, r.direction());
   float c = dot(oc, oc) - radius*radius;
-  float D = b*b - a*c;
+  float D = b*b - 4*a*c;
   if (D < 0)
     return false;
   float t = (-b - sqrt(D)) / (2.0*a);
+  Point3 p = r.origin() + t*r.direction();
+  Point3 n = unit_vector(p - center);
+  // *s = SurfaceInteraction(p, n, -(r.direction()), 0.0, Point2f(0,0), pt);
+  s->n = n;
+  s->p = p;
+  s->wo = -r.direction();
+  s->primitive = this;
+  // cout << "Normal: " << s->n << "\n";
   return (t >= 0);
 }
 /**

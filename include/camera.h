@@ -30,12 +30,12 @@ class Camera
   // Getters
   int height() { return _height; }
   int width() { return _width; }
-  // Setters
-  void set_height(int h) { _height = h; }
-  void set_width(int w) { _width = w; }
   Vec3 get_u() { return u; }
   Vec3 get_v() { return v; }
   Vec3 get_w() { return w; }
+  // Setters
+  void set_height(int h) { _height = h; }
+  void set_width(int w) { _width = w; }
   virtual Ray generate_ray(int x, int y) = 0;
   virtual Ray generate_ray(float x, float y) = 0;
 };
