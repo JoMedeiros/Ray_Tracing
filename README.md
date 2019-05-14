@@ -24,3 +24,7 @@ make
 - [ ] Sphere
 - [ ] main loop
 
+### TODOS
+
+- [ ] Remove buffer from Renderer to Integrator class
+

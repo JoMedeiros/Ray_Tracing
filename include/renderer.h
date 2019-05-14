@@ -10,14 +10,14 @@
 
 class Renderer 
 {
-public:
-  Buffer* buffer;
-  Background* bg;
-  Camera* camera;
-  vector<Primitive*> primitives;
-  void run();
-  void save_img();
-  void add_primitive(Sphere* sp);
+  public:
+    Buffer* buffer;
+    Background* bg;
+    Camera* camera;
+    vector<Primitive*> primitives;
+    void run();
+    void save_img();
+    void add_primitive(Sphere* sp);
 };
 
 #endif

@@ -12,16 +12,22 @@
 #include <memory>
 #include <vector>
 #include "light.h"
-#include "background.h"
 #include "primitive.h"
+#include "buffer.h"
+#include "camera.h"
+#include "background.h"
 
 class Scene {
   //=== Public data
   public:
+    Buffer* buffer;
+    Camera* camera;
+    Background* bg;
     vector<shared_ptr<Light>> lights; // list of lights
     shared_ptr< Background > background; // The background object.
-  private:
+  //private:
     shared_ptr<Primitive> aggregate; // The scene graph of objects, acceleration structure.
+    vector<Primitive*> primitives;
 
     //=== Public interface
   public:

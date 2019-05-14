@@ -11,7 +11,11 @@
 
 #include "integrator.h"
 
-class FlatIntegrator : public Integrator{};
+class FlatIntegrator : public Integrator{
+  public:
+    void render( const Scene& scene );
+    void Li( const Ray& ray, const Scene& scene );
+};
 
 #endif // FLAT_INTEGRATOR_H
 
