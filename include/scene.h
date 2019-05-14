@@ -20,9 +20,9 @@
 class Scene {
   //=== Public data
   public:
+    Background* bg;
     Buffer* buffer;
     Camera* camera;
-    Background* bg;
     vector<shared_ptr<Light>> lights; // list of lights
     shared_ptr< Background > background; // The background object.
   //private:

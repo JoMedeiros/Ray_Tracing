@@ -1,7 +1,6 @@
 #include <iostream>
 #include "renderer.h"
 #include "ray.h"
-#include "load_scene.h"
 #include "background.h"
 #include "buffer.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -25,7 +24,7 @@ int main( int argc, char *argv[] ) {
 " +=========================================+\n\n" <<
 "[1] Scene file parsing initiated...\n";
   try {
-    setup(render, filename);
+    render.setup( filename);
   } 
   catch (exception &e ) {
     cerr << e.what();
