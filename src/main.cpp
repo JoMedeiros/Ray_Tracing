@@ -16,6 +16,7 @@ int main( int argc, char *argv[] ) {
   else {
     cout << "Missing arguments\nHow to use:\n" << argv[0] 
       << " <filename>.yml\n";
+    return EXIT_FAILURE;
   }
   cout <<
 " +=========================================+\n" <<
@@ -28,7 +29,7 @@ int main( int argc, char *argv[] ) {
   } 
   catch (exception &e ) {
     cerr << e.what();
-    return -1;
+    return EXIT_FAILURE;
   }
   cout <<
 "[2] Starting ray tracing progress.\n" <<
@@ -38,7 +39,7 @@ int main( int argc, char *argv[] ) {
 "    Ray tracing is usually a slow process, please be patient: \n";
 
   render.run();
-  stbi_write_png("output.png", render.buffer->width(), 
-      render.buffer->height(), 3, render.buffer->data(), 3*render.buffer->width());
+  stbi_write_png("output.png", render.scene->buffer->width(), 
+      render.scene->buffer->height(), 3, render.scene->buffer->data(), 3*render.scene->buffer->width());
 	return EXIT_SUCCESS;
 }

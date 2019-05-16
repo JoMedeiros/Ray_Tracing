@@ -20,14 +20,15 @@
 class Scene {
   //=== Public data
   public:
+    Scene(){};
     Background* bg;
     Buffer* buffer;
     Camera* camera;
+    vector<Primitive*> primitives;
     vector<shared_ptr<Light>> lights; // list of lights
     shared_ptr< Background > background; // The background object.
   //private:
     shared_ptr<Primitive> aggregate; // The scene graph of objects, acceleration structure.
-    vector<Primitive*> primitives;
 
     //=== Public interface
   public:

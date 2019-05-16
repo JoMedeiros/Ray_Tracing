@@ -5,37 +5,43 @@
 
 using namespace std;
 
+Renderer::Renderer() {
+  // Initialize an empty scene
+  this->scene = new Scene();
+}
+
 void Renderer::run() {
-  int w = buffer->width();
-  int h = buffer->height();
+  int w = scene->buffer->width();
+  int h = scene->buffer->height();
   float a = 0.25;
   Color mat = Color(0,175, 125);
 	for ( int j = h-1; j >= 0; --j ) {
 		for ( int i = 0; i < w; ++i ) {
 			float v = float(i+0.5) / float(w), 
             u = float(j+0.5) / float(h);
-      Ray ray = camera->generate_ray(v, u);
+      Ray ray = scene->camera->generate_ray(v, u);
       //Ray ray = camera->generate_ray( float(i)/float(w), 
           //float(j)/ float(h));
       cout << "pixel (" << j << ", " << i << ") " 
         << "ray: " << ray << "\n";
-      Color color = bg->sample(u, v);
-      for ( Primitive*& p : primitives ) {
-        SurfaceInteraction* s = new SurfaceInteraction();
-        bool hit = p->intersect( ray, s );
-        if ( hit ){
-          color = 0.5*255.0*(Vec3(1,1,1) + s->n);
-          float m = dot(s->n, camera->get_w());
-          color = (m+a)*mat;
-            //cout << "Normal: " << s->n.x();
-        }
-      }
-      buffer->paint( i, j, color );
+      Color color = scene->bg->sample(u, v);
+      if (scene->intersect_p(ray)) color = Color (255,0,0);
+      //for ( Primitive*& p : scene->primitives ) {
+      //  SurfaceInteraction* s = new SurfaceInteraction();
+      //  bool hit = p->intersect( ray, s );
+      //  if ( hit ){
+      //    color = 0.5*255.0*(Vec3(1,1,1) + s->n);
+      //    float m = dot(s->n, scene->camera->get_w());
+      //    color = (m+a)*mat;
+      //      //cout << "Normal: " << s->n.x();
+      //  }
+      //}
+      scene->buffer->paint( i, j, color );
 		}
 	}
 }
-void Renderer::add_primitive(Sphere* sp){
-  primitives.push_back(sp);
+void Renderer::add_primitive(Sphere* & sp){
+  scene->primitives.push_back(sp);
 }
 
 Vec3 Renderer::load_vec(const YAML::Node & node) {
@@ -59,7 +65,7 @@ void Renderer::setup_bg(const YAML::Node & bg){
   try
   {
     if (YAML::Node color = bg["color"]) {
-      this->bg = new Background(load_color(color));
+      scene->bg = new Background(load_color(color));
     }
     else if ( YAML::Node colors = bg["colors"] ) {
       Color colors_arr[4];
@@ -71,11 +77,11 @@ void Renderer::setup_bg(const YAML::Node & bg){
       for (;i < 4;++i) {
         colors[i] = colors[i-1];
       }
-      this->bg = new Background(colors_arr[0], colors_arr[1], colors_arr[2], 
+      scene->bg = new Background(colors_arr[0], colors_arr[1], colors_arr[2], 
           colors_arr[3]);
     }
     else {
-      this->bg = new Background(Color(255,255,255));
+      scene->bg = new Background(Color(255,255,255));
     }
   }
   catch (exception & e)
@@ -104,18 +110,18 @@ void Renderer::setup_camera(const YAML::Node & camera) {
       right = dims[1].as<float>();
       bottom = dims[2].as<float>();
       top = dims[3].as<float>();
-      this->camera = new OrthoCamera( origin, lookat, vup, left, right, 
+      scene->camera = new OrthoCamera( origin, lookat, vup, left, right, 
           bottom, top);
     } 
     else if (type.compare("perspective") == 0) {
       float fd = camera["fdistance"].as<float>();
       float fovy = camera["fovy"].as<float>();
       float aspect_ratio = camera["aspect"].as<float>();
-      this->camera = new PerspectiveCamera( origin, lookat, vup,  
+      scene->camera = new PerspectiveCamera( origin, lookat, vup,  
           fovy, aspect_ratio, fd);
     }
-    cout << "Initializing buffethis->..\n";
-    this->buffer = new Buffer(height, width);
+    cout << "Initializing buffer..\n";
+    this->scene->buffer = new Buffer(height, width);
   }
   catch (exception & e)
   {
@@ -168,9 +174,9 @@ void Renderer::setup( string file ) {
   }
   cout <<
     ">>> The Camera frame is:\n" <<
-    "    u" << this->camera->get_u() << "\n" <<
-    "    v" << this->camera->get_v() << "\n" <<
-    "    w" << this->camera->get_w() << "\n\n" <<
+    "    u" << this->scene->camera->get_u() << "\n" <<
+    "    v" << this->scene->camera->get_v() << "\n" <<
+    "    w" << this->scene->camera->get_w() << "\n\n" <<
     "    >>> Parsing scene successfuly done! <<<\n\n";
 }
 

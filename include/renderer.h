@@ -14,21 +14,19 @@
 class Renderer 
 {
   public:
-    Buffer* buffer;
-    Background* bg;
+    Renderer();
+    //Buffer* buffer;
     Scene* scene;
-    Camera* camera;
-    vector<Primitive*> primitives;
     map<string, Color> color_table;
     void run();
-    void setup( string file="scene.yml" );
+    void setup( string file );
     Vec3 load_vec(const YAML::Node & node);
     Color load_color(const YAML::Node & color_node);
     void setup_bg(const YAML::Node & bg);
     void setup_camera(const YAML::Node & camera);
     void setup_scene(const YAML::Node & scene);
     void save_img();
-    void add_primitive(Sphere* sp);
+    void add_primitive(Sphere* &sp);
 };
 
 #endif

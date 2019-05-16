@@ -11,20 +11,33 @@ make
 
 ## Usage
 
-
+```
+./bin/img_gen <yaml_file> > <log_file>
+```
 
 ## Checklist
 
 - [x] Buffer
 - [ ] Scene Parser 
+  - [x] Parse camera
+  - [x] Parse background
+  - [x] Parse spheres
+  - [ ] Parse integrator
+  - [ ] Parse lights
 - [ ] Background
+  - [x] 4 points gradient
+  - [ ] image as background
 - [ ] Camera
   - [x] OrthoCamera
   - [ ] PerspectiveCamera
-- [ ] Sphere
+- [x] Sphere
+- [ ] Triangle
 - [ ] main loop
 
 ### TODOS
 
-- [ ] Remove buffer from Renderer to Integrator class
+- [x] Remove buffer from Renderer to Scene class
+- [x] Move loop "intersection with objects" from Renderer to Scene
+- [ ] Put pixels loop in  Integrator
+- [ ] Implement save_img function in Renderer class
 
