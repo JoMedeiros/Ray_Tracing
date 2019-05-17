@@ -4,12 +4,11 @@
  * @version	1
  * @date
  * 	Created:	12th May 2019
- * 	Last Update:	12th May 2019
+ * 	Last Update:	17th May 2019
  */
 #ifndef SAMPLE_INTEGRATOR_H
 #define SAMPLE_INTEGRATOR_H
 
-// #include "vec3.h"
 #include "integrator.h"
 #include "sampler.h"
 #include "camera.h"
@@ -20,7 +19,7 @@ class SampleIntegrator : public Integrator {
 	public:
 		virtual ~SampleIntegrator();
 		SampleIntegrator( shared_ptr<const Camera> cam,
-		                  shared_ptr<Sampler> sampler)
+		                  shared_ptr<Sampler> sampler )
 		    : camera{cam}, sampler{sampler}{};
 
 		virtual Color Li( const Ray& ray, const Scene& scene,

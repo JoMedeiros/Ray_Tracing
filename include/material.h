@@ -2,12 +2,13 @@
  * @author	josivanmedeiros
  * @version	704
  * @date
- * 	Created:	25th Apr 2019
- * 	Last Update:	25th Apr 2019
+ * 	Created:	15th May 2019
+ * 	Last Update:	17th May 2019
  */
+#ifndef MATERIAL_H
+#define MATERIAL_H
 
-#ifndef _MATERIAL_H_
-#define _MATERIAL_H_
+#include "vec3.h"
 
 class Material
 {
@@ -17,4 +18,4 @@ public:
   //@TODO
 };
 
-#endif // _MATERIAL_H_
+#endif // MATERIAL_H

@@ -11,7 +11,6 @@
 void FlatIntegrator::render( const Scene& scene ) {
   int w = scene.buffer->width();
   int h = scene.buffer->height();
-  Color mat = Color(0,175, 125);
 	for ( int j = h-1; j >= 0; --j ) {
 		for ( int i = 0; i < w; ++i ) {
 			float v = float(i+0.5) / float(w), 
@@ -30,7 +29,6 @@ void FlatIntegrator::render( const Scene& scene ) {
 /**
  * @brief 
  */
-void FlatIntegrator::Li( const Ray& ray, const Scene& scene ) {
-  FlatIntegrator f;
+Color FlatIntegrator::Li( const Ray& ray, const Scene& scene, Sampler& sampler ) const {
 }
 

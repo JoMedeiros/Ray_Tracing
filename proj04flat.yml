@@ -6,6 +6,7 @@ background: # This defines an interpolated background
     - [ 153, 204, 255 ] # bottom right -->
 camera: 
   type: "perspective"
+  name: "cam_flat"
   # The camera frame 
   position: [ 0, 4, 0 ] # located at the origin 
   target: [ 0, 0, -10.0 ] # looking down the -Z axis 

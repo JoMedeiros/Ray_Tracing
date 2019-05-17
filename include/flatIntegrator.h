@@ -14,7 +14,7 @@
 class FlatIntegrator : public Integrator{
   public:
     void render( const Scene& scene );
-    void Li( const Ray& ray, const Scene& scene );
+		Color Li( const Ray& ray, const Scene& scene, Sampler& sampler ) const;
 };
 
 #endif // FLAT_INTEGRATOR_H

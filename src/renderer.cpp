@@ -1,3 +1,11 @@
+/**
+ * @file	renderer.cpp
+ * @author	Josivan Medeiros
+ * @version	1
+ * @date
+ * 	Created:	12th May 2019
+ * 	Last Update:	17th May 2019
+ */
 #include "renderer.h"
 
 using namespace std;
@@ -9,11 +17,11 @@ Renderer::Renderer() {
 
 void Renderer::run() {
   //FlatIntegrator f;
-  DepthIntegrator d;
+  //DepthIntegrator d;
   NormalMapIntegrator n;
   //f.render(*scene);
-  d.render(*scene);
-  //n.render(*scene);
+  //d.render(*scene);
+  n.render(*scene);
 }
 void Renderer::add_primitive(Sphere* & sp){
   scene->primitives.push_back(sp);

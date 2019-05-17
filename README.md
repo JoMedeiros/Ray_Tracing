@@ -33,13 +33,21 @@ make
 - [x] Sphere
 - [ ] Triangle
 - [ ] main loop
+- [ ] Sampler
 
 ### TODOS
 
+- [ ] set output file name from the yaml file
+- [ ] choose file format from yaml file
+- [ ] put background in yaml file inside scene tag
+- [ ] Implement class as specified in the code examples of 
+project 4
 - [x] Remove buffer from Renderer to Scene class
 - [x] Move loop "intersection with objects" from Renderer to Scene
 - [x] Put pixels loop in  Integrator
 - [ ] Implement DepthIntegrator
+  - [ ] Allow user to set start and end color
+  - [ ] Allow user to set min a max distances
 - [x] Implement NormalMapIntegrator
 - [ ] Implement Material
 - [ ] create Triangle class
@@ -47,4 +55,7 @@ make
 - [ ] Implement BVH
 - [ ] Parse OBJ
 - [ ] Implement save_img function in Renderer class
+- [ ] Implement Sampler class
+- [ ] Implement BlinnPhongIntegrator
+- [ ] Move camera from Scene to Integrator
 

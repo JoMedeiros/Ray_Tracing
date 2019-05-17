@@ -9,12 +9,12 @@
 #ifndef INTEGRATOR_H
 #define INTEGRATOR_H
 #include "scene.h"
+#include "sampler.h"
 
 class Integrator {
   public:
     virtual ~Integrator() {};
-    virtual void render( const Scene& scene) = 0;
-    virtual void Li(const Ray& ray, const Scene& scene) = 0;
+    virtual void render( const Scene& scene ) = 0;
 };
 
 #endif // INTEGRATOR_H
