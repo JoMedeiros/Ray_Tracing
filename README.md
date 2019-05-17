@@ -38,6 +38,13 @@ make
 
 - [x] Remove buffer from Renderer to Scene class
 - [x] Move loop "intersection with objects" from Renderer to Scene
-- [ ] Put pixels loop in  Integrator
+- [x] Put pixels loop in  Integrator
+- [ ] Implement DepthIntegrator
+- [x] Implement NormalMapIntegrator
+- [ ] Implement Material
+- [ ] create Triangle class
+- [ ] create Triangle Mesh class
+- [ ] Implement BVH
+- [ ] Parse OBJ
 - [ ] Implement save_img function in Renderer class
 

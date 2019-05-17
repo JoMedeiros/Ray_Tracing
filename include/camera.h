@@ -33,6 +33,7 @@ class Camera
   Vec3 get_u() { return u; }
   Vec3 get_v() { return v; }
   Vec3 get_w() { return w; }
+  Vec3 get_origin() { return _origin; }
   // Setters
   void set_height(int h) { _height = h; }
   void set_width(int w) { _width = w; }

@@ -1,7 +1,4 @@
 #include "renderer.h"
-#include "ray.h"
-#include "sphere.h"
-#include <iostream>
 
 using namespace std;
 
@@ -11,34 +8,12 @@ Renderer::Renderer() {
 }
 
 void Renderer::run() {
-  int w = scene->buffer->width();
-  int h = scene->buffer->height();
-  float a = 0.25;
-  Color mat = Color(0,175, 125);
-	for ( int j = h-1; j >= 0; --j ) {
-		for ( int i = 0; i < w; ++i ) {
-			float v = float(i+0.5) / float(w), 
-            u = float(j+0.5) / float(h);
-      Ray ray = scene->camera->generate_ray(v, u);
-      //Ray ray = camera->generate_ray( float(i)/float(w), 
-          //float(j)/ float(h));
-      cout << "pixel (" << j << ", " << i << ") " 
-        << "ray: " << ray << "\n";
-      Color color = scene->bg->sample(u, v);
-      if (scene->intersect_p(ray)) color = Color (255,0,0);
-      //for ( Primitive*& p : scene->primitives ) {
-      //  SurfaceInteraction* s = new SurfaceInteraction();
-      //  bool hit = p->intersect( ray, s );
-      //  if ( hit ){
-      //    color = 0.5*255.0*(Vec3(1,1,1) + s->n);
-      //    float m = dot(s->n, scene->camera->get_w());
-      //    color = (m+a)*mat;
-      //      //cout << "Normal: " << s->n.x();
-      //  }
-      //}
-      scene->buffer->paint( i, j, color );
-		}
-	}
+  //FlatIntegrator f;
+  DepthIntegrator d;
+  NormalMapIntegrator n;
+  //f.render(*scene);
+  d.render(*scene);
+  //n.render(*scene);
 }
 void Renderer::add_primitive(Sphere* & sp){
   scene->primitives.push_back(sp);
@@ -178,5 +153,12 @@ void Renderer::setup( string file ) {
     "    v" << this->scene->camera->get_v() << "\n" <<
     "    w" << this->scene->camera->get_w() << "\n\n" <<
     "    >>> Parsing scene successfuly done! <<<\n\n";
+}
+/**
+ * @brief Saves image as fileformat
+ */
+void Renderer::save_img(const char* filename) {
+//  stbi_write_png(filename, this->scene->buffer->width(), 
+//      this->scene->buffer->height(), 3, this->scene->buffer->data(), 3*this->scene->buffer->width());
 }
 

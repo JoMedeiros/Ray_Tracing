@@ -21,7 +21,7 @@ bool Scene::intersect( const Ray& r, SurfaceInteraction *isect ) const {
       float dist = (s->p - r.origin()).length();
       if (dist < nearest ) {
         nearest = dist;
-        isect = s;
+        *isect = *s;
       }
     }
   }

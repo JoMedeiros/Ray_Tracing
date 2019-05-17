@@ -11,7 +11,11 @@
 
 #include "integrator.h"
 
-class DepthIntegrator : public Integrator{};
+class NormalMapIntegrator : public Integrator {
+  public:
+    void render( const Scene& scene);
+    void Li(const Ray& ray, const Scene& scene);
+};
 
 #endif // NORMAL_MAP_INTEGRATOR_H 
 
