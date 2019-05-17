@@ -31,7 +31,6 @@ void SampleIntegrator::render(const Scene& scene) {
       Ray ray = scene.camera->generate_ray(v, u);
       Sampler sampler;
       Color L = Li( ray, scene, sampler );
-      if (scene.intersect_p(ray)) L = Color (255,0,0);
       scene.buffer->paint( i, j, L );
 		}
 	}
