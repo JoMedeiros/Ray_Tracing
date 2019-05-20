@@ -18,7 +18,7 @@ camera:
   #--- Retina/image dimensions 
   width: 800
   height: 600
-  img_file: { name: "flat_spheres", type: "PNG" }
+  img_file: { name: "spheres", type: "jpg" }
 
 scene:
   - type: "sphere"

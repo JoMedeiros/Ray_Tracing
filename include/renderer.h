@@ -24,9 +24,11 @@
 
 class Renderer 
 {
+  private:
+    string filename;
+    string filetype;
   public:
     Renderer();
-    //Buffer* buffer;
     Scene* scene;
     map<string, Color> color_table;
     void run();
@@ -36,7 +38,7 @@ class Renderer
     void setup_bg(const YAML::Node & bg);
     void setup_camera(const YAML::Node & camera);
     void setup_scene(const YAML::Node & scene);
-    void save_img(const char* filename);
+    void save_img();
     void add_primitive(Sphere* &sp);
 };
 

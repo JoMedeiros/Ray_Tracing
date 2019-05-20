@@ -7,6 +7,9 @@
  * 	Last Update:	17th May 2019
  */
 #include "renderer.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -105,6 +108,11 @@ void Renderer::setup_camera(const YAML::Node & camera) {
     }
     cout << "Initializing buffer..\n";
     this->scene->buffer = new Buffer(height, width);
+    auto img_file = camera["img_file"];
+    if (img_file["name"].Type() == YAML::NodeType::Scalar)
+      this->filename = img_file["name"].as<string>();
+    if (img_file["type"].Type() == YAML::NodeType::Scalar)
+      this->filetype = img_file["type"].as<string>();
   }
   catch (exception & e)
   {
@@ -165,8 +173,35 @@ void Renderer::setup( string file ) {
 /**
  * @brief Saves image as fileformat
  */
-void Renderer::save_img(const char* filename) {
-//  stbi_write_png(filename, this->scene->buffer->width(), 
-//      this->scene->buffer->height(), 3, this->scene->buffer->data(), 3*this->scene->buffer->width());
+void Renderer::save_img() {
+  transform(this->filetype.begin(), this->filetype.end(), 
+      this->filetype.begin(), ::tolower);
+
+  // OBS: PNG is the default format so you dont need to specify
+  if (this->filetype.compare("bmp") == 0)
+     stbi_write_bmp((this->filename+".bmp").c_str(), 
+     this->scene->buffer->width(),this->scene->buffer->height(), 
+        3, this->scene->buffer->data());
+
+  else if (this->filetype.compare("tga") == 0)
+     stbi_write_tga((this->filename+".tga").c_str(), 
+     this->scene->buffer->width(),this->scene->buffer->height(), 
+        3, this->scene->buffer->data());
+
+  else if (this->filetype.compare("jpg") == 0)
+     stbi_write_jpg((this->filename+".jpg").c_str(), 
+     this->scene->buffer->width(),this->scene->buffer->height(), 
+        3, this->scene->buffer->data(), 95);
+
+  // You need to convert the data to float to use hdr
+  //else if (this->filetype.compare("hdr") == 0)
+  //   stbi_write_hdr((this->filename+".hdr").c_str(), 
+  //   this->scene->buffer->width(),this->scene->buffer->height(), 
+  //      3, this->scene->buffer->data());
+  else
+    stbi_write_png((this->filename+".png").c_str(), 
+        this->scene->buffer->width(), this->scene->buffer->height(), 
+        3, this->scene->buffer->data(), 
+        3*this->scene->buffer->width());
 }
 

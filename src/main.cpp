@@ -1,10 +1,8 @@
 #include <iostream>
 #include "renderer.h"
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
 
 int main( int argc, char *argv[] ) {
-  string filename = "scene.yml";
+  string filename;
   string outputfile = "output.ppm";
   Renderer render;
   if (argc > 1){
@@ -36,8 +34,6 @@ int main( int argc, char *argv[] ) {
 "    Ray tracing is usually a slow process, please be patient: \n";
 
   render.run();
-  //render.save_img("output.png");
-  stbi_write_png("output.png", render.scene->buffer->width(), 
-      render.scene->buffer->height(), 3, render.scene->buffer->data(), 3*render.scene->buffer->width());
+  render.save_img();
 	return EXIT_SUCCESS;
 }
