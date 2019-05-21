@@ -13,6 +13,7 @@
 
 class FlatIntegrator : public Integrator{
   public:
+    FlatIntegrator(){/* Empty */}
     void render( const Scene& scene );
 		Color Li( const Ray& ray, const Scene& scene, Sampler& sampler ) const;
 };

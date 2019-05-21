@@ -16,6 +16,7 @@ private:
   //@TODO
 public:
   //@TODO
+  virtual ~Material() = default;
 };
 
 #endif // MATERIAL_H

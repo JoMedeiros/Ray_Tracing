@@ -7,6 +7,7 @@
  * 	Last Update:	14th May 2019
  */
 #include "flatIntegrator.h"
+#include "flatMaterial.h"
 
 void FlatIntegrator::render( const Scene& scene ) {
   int w = scene.buffer->width();
@@ -20,8 +21,10 @@ void FlatIntegrator::render( const Scene& scene ) {
           //float(j)/ float(h));
       cout << "pixel (" << j << ", " << i << ") " 
         << "ray: " << ray << "\n";
-      Color color = scene.bg->sample(u, v);
-      if (scene.intersect_p(ray)) color = Color (255,0,0);
+      Sampler spp;
+      Color color = Li(ray, scene, spp);
+      //Color color = scene.bg->sample(u, v);
+      //if (scene.intersect_p(ray)) color = Color (255,0,0);
       scene.buffer->paint( i, j, color );
 		}
 	}
@@ -30,5 +33,21 @@ void FlatIntegrator::render( const Scene& scene ) {
  * @brief 
  */
 Color FlatIntegrator::Li( const Ray& ray, const Scene& scene, Sampler& sampler ) const {
+  //SurfaceInteraction si;
+  Color L(0,0,0); // The radiance
+  // Find closest ray intersection or return background radiance.
+  SurfaceInteraction si;  
+  if (!scene.intersect(ray, &si)) {
+    // This might be just:
+    L = scene.bg->sample(1,1); //TODO implement bg sample with ray
+  }
+  else {
+    Material * m = si.primitive->get_material().get();
+    FlatMaterial *fm = dynamic_cast< FlatMaterial *>(m);
+    // Assign diffuse color to L.
+    L = fm->kd(); // Call a method present only in FlatMaterial.
+  }
+  return L;
 }
+
 

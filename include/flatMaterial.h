@@ -12,9 +12,11 @@
 #include "material.h"
 
 class FlatMaterial : public Material {
+  private:
+    Color kdifuse; // diffuse constant
   public:
-    Color color;
-    FlatMaterial() { /* Empty */ }
+    FlatMaterial(Color c = Color(0,0,0)) : kdifuse(c){ /* Empty */ }
+    Color kd(){ return kdifuse; }
 };
 
 #endif // FLAT_MATERIAL_H

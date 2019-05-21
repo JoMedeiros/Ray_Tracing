@@ -27,6 +27,7 @@ class Renderer
   private:
     string filename;
     string filetype;
+    unique_ptr<Integrator> integrator;
   public:
     Renderer();
     Scene* scene;
@@ -38,6 +39,7 @@ class Renderer
     void setup_bg(const YAML::Node & bg);
     void setup_camera(const YAML::Node & camera);
     void setup_scene(const YAML::Node & scene);
+    void setup_running(const YAML::Node & run);
     void save_img();
     void add_primitive(Sphere* &sp);
 };

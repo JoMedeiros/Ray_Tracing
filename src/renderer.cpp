@@ -10,6 +10,9 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 #include <algorithm>
+#include <memory>
+#include "flatMaterial.h"
+#include <map>
 
 using namespace std;
 
@@ -19,12 +22,7 @@ Renderer::Renderer() {
 }
 
 void Renderer::run() {
-  //FlatIntegrator f;
-  //DepthIntegrator d;
-  NormalMapIntegrator n;
-  //f.render(*scene);
-  //d.render(*scene);
-  n.render(*scene);
+  integrator->render(*scene);
 }
 void Renderer::add_primitive(Sphere* & sp){
   scene->primitives.push_back(sp);
@@ -124,20 +122,53 @@ void Renderer::setup_camera(const YAML::Node & camera) {
  * @brief Sets the scene
  */
 void Renderer::setup_scene(const YAML::Node & scene) {
-  for (auto obj = scene.begin(); obj != scene.end(); ++obj) {
+  auto materials = scene["materials"];
+  map<string, shared_ptr<Material>> mat_lib;
+  for (auto obj=materials.begin();obj!=materials.end();++obj) {
+    string type = (*obj)["type"].as<string>();
+    if (type.compare("flat") == 0) {
+      Color color = load_vec((*obj)["diffuse"]);
+      string mat_name = (*obj)["name"].as<string>();
+      FlatMaterial mat(color);
+      mat_lib[mat_name] = make_shared<FlatMaterial>(mat);
+    }
+  }
+
+  auto objects = scene["objects"];
+  for (auto obj = objects.begin(); obj != objects.end(); ++obj) {
     string type = (*obj)["type"].as<string>();
     if (type.compare("sphere") == 0) {
       string name = (*obj)["name"].as<string>();
+      string mat = (*obj)["material"].as<string>();
       float radius = (*obj)["radius"].as<float>();
       Vec3 center = load_vec((*obj)["center"]);
       Sphere* sp = new Sphere(center, radius);
+      sp->set_material(mat_lib[mat]);
       this->add_primitive(sp);
     }
   }
 }
 /**
- * @brief Initialize the Renderer settings loading file
+ * @brief Initialize the running settings like the integrator
  */
+void Renderer::setup_running(const YAML::Node & run){
+  auto integrator = run["integrator"];
+  string type = integrator["type"].as<string>();
+  //size_t samples = integrator["spp value"].as<size_t>();
+  if (type.compare("flat") == 0) {
+    this->integrator=unique_ptr<FlatIntegrator>(
+        new FlatIntegrator());
+  }
+  else if (type.compare("normal") == 0) {
+    this->integrator=unique_ptr<NormalMapIntegrator>(
+        new NormalMapIntegrator());
+  }
+  else if (type.compare("depth map") == 0) {
+    this->integrator=unique_ptr<DepthIntegrator>(
+        new DepthIntegrator());
+  }
+  
+}
 /**
  * @brief Sets the renderer parsing a scene.yml file
  * @param r     The Renderer object
@@ -145,18 +176,21 @@ void Renderer::setup_scene(const YAML::Node & scene) {
  */
 void Renderer::setup( string file ) {
   Color c00, c01, c10, c11;
-  YAML::Node config, bg, camera, scene;
+  YAML::Node config, bg, camera, scene, running;
   try {
     config = YAML::LoadFile(file);
     bg = config["background"];
     camera = config["camera"];
     scene = config["scene"];
+    running = config["running"];
     cout << "Initializing background...\n";
     setup_bg(bg);
     cout << "Initializing camera...\n";
     setup_camera(camera);
     cout << "Buffer complete...\n";
     setup_scene(scene);
+    cout << "Running setup...\n";
+    setup_running(running);
   }
   catch (std::exception & e) {
     cout << "Error loading config file:\n";

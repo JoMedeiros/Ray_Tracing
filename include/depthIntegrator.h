@@ -13,6 +13,7 @@
 
 class DepthIntegrator : public Integrator{
   public:
+    DepthIntegrator() { /* Empty */ }
     void render( const Scene& scene);
     void Li(const Ray& ray, const Scene& scene);
 };

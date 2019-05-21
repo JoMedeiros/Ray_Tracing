@@ -13,6 +13,7 @@
 
 class NormalMapIntegrator : public Integrator {
   public:
+    NormalMapIntegrator() { /* Empty */ }
     void render( const Scene& scene);
     void Li(const Ray& ray, const Scene& scene);
 };

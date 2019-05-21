@@ -18,25 +18,47 @@ camera:
   #--- Retina/image dimensions 
   width: 800
   height: 600
-  img_file: { name: "spheres", type: "jpg" }
+  img_file: { name: "spheres", type: "png" }
 
 scene:
-  - type: "sphere"
-    name: "sphere1"
-    radius: 0.4
-    center: [ -1.0, 0.2, -5.0]
+  objects:
+    - type: "sphere"
+      name: "sphere1"
+      material: "gold"
+      radius: 0.4
+      center: [ -1.0, 0.2, -5.0]
 
-  - type: "sphere"
-    name: "sphere2"
-    radius: 0.4
-    center: [ 1.0, 0.2, -8.0 ]
+    - type: "sphere"
+      name: "sphere2"
+      material: "gold"
+      radius: 0.4
+      center: [ 1.0, 0.2, -8.0 ]
 
-  - type: "sphere" 
-    name: "sphere3"
-    radius: 0.4
-    center: [ -1.0, 0.2, -3.5 ]
+    - type: "sphere" 
+      name: "sphere3"
+      material: "pink"
+      radius: 0.4
+      center: [ -1.0, 0.2, -3.5 ]
 
-  - type: "sphere" 
-    name: "sphere4"
-    radius: 500
-    center: [ 0.0, -500.0, -5.5 ]
+    - type: "sphere" 
+      name: "sphere4"
+      material: "green"
+      radius: 500
+      center: [ 0.0, -500.0, -5.5 ]
+
+  materials:
+    - type: "flat" 
+      name: "gold"
+      diffuse: [ 236, 124, 17 ]
+    - type: "flat"
+      name: "green"
+      diffuse: [ 42, 201, 51, ]
+    - type: "flat"
+      name: "pink"
+      diffuse: [ 253, 153, 253 ]
+
+running: # Running setup --->
+  integrator: 
+    type: "flat"
+    spp value: 1
+

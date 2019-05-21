@@ -25,6 +25,9 @@ class Primitive {
   // Simpler & faster version of intersection that only return true/false.
   // It does not compute the hit point information.
   virtual bool intersect_p( const Ray& r ) const = 0;
+  void set_material(shared_ptr<Material> mat) {
+    material = mat;
+  }
   const shared_ptr<Material> get_material(void) const 
   { return material; }
  private:
