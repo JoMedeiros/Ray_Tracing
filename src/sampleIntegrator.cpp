@@ -29,7 +29,7 @@ void SampleIntegrator::render(const Scene& scene) {
 			float v = float(i) / float(w), 
             u = float(j) / float(h);
       Ray ray = scene.camera->generate_ray(v, u);
-      Sampler sampler;
+      Sampler sampler(1);
       Color L = Li( ray, scene, sampler );
       scene.buffer->paint( i, j, L );
 		}

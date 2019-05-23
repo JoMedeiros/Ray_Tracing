@@ -16,18 +16,41 @@
 
 using namespace std;
 
+/**
+ * @brief Default Constructor
+ */
 Renderer::Renderer() {
   // Initialize an empty scene
   this->scene = new Scene();
 }
-
+/**
+ * @brief Render image
+ */
 void Renderer::run() {
   integrator->render(*scene);
 }
+/**
+ * @brief Inserts a Primitive object in the scene
+ *
+ * @param sp  A Sphere object.
+ */
 void Renderer::add_primitive(Sphere* & sp){
   scene->primitives.push_back(sp);
 }
 
+/**
+ * @brief Loads a Vec3 described in a yaml node
+ *
+ * @param node  The node reference in the format:
+ *
+ * [ x, y, z ]
+ * or:
+ * - x
+ * - y
+ * - z
+ *
+ * @return  A Vec3 object initialized with {x, y, z}
+ */
 Vec3 Renderer::load_vec(const YAML::Node & node) {
   Vec3 v;
   if (node.Type() == YAML::NodeType::Scalar)// In this case it is a color
@@ -38,12 +61,27 @@ Vec3 Renderer::load_vec(const YAML::Node & node) {
   }
   return v;
 }
+/**
+ * @brief Loads a color from a yaml node
+ *
+ * @param color_node The node in this format in .yml file:
+ * [ x, y, z ] 
+ * or:
+ * - x
+ * - y
+ * - z
+ *
+ * @return 
+ */
 Color Renderer::load_color(const YAML::Node & color_node) {
   return load_vec(color_node);
 }
 /**
  * @brief Parses background node in .yml file to set Background 
  * object
+ *
+ * @param bg The background node. It should contain 4 colors as
+ * described in `load_vec` function.
  */
 void Renderer::setup_bg(const YAML::Node & bg){
   try
@@ -154,10 +192,12 @@ void Renderer::setup_scene(const YAML::Node & scene) {
 void Renderer::setup_running(const YAML::Node & run){
   auto integrator = run["integrator"];
   string type = integrator["type"].as<string>();
-  //size_t samples = integrator["spp value"].as<size_t>();
+  size_t samples = integrator["spp value"].as<size_t>();
+  shared_ptr<Sampler> sampler(new Sampler(samples));
+  shared_ptr<Camera> cam(scene->camera);
   if (type.compare("flat") == 0) {
     this->integrator=unique_ptr<FlatIntegrator>(
-        new FlatIntegrator());
+        new FlatIntegrator(cam, sampler));
   }
   else if (type.compare("normal") == 0) {
     this->integrator=unique_ptr<NormalMapIntegrator>(

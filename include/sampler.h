@@ -9,7 +9,12 @@
 #ifndef SAMPLER_H
 #define SAMPLER_H
 
-class Sampler {};
+class Sampler {
+  private:
+    unsigned samples;
+  public:
+    Sampler(unsigned s): samples{s}{};
+};
 
 #endif // SAMPLER_H
 

@@ -42,15 +42,15 @@ make
 - [x] Set output file name from the yaml file
 - [x] Choose file format from yaml file
 - [x] Set integrator in yaml file
-- [ ] Implementa a version of sample() in background that receives
-as argument a Ray
-- [ ] On setup_scene initialize the Materials (separate in yaml
-    objects and materials
+- [ ] Organize folders include and src in subdirectories
+- [ ] Derive Integrators from SampleIntegrator
+  - [x] FlatIntegrator : public SampleIntegrator
+  - [ ] NormalMapIntegrator : public SampleIntegrator
+  - [ ] DepthIntegrator : public SampleIntegrator
 - [ ] Use samples value to initialize integrators
 - [ ] Put background in yaml file inside scene tag
 - [ ] Implement classes as specified in the code examples of 
 project 4
-- [ ] Derive Integrators from SampleIntegrator
 - [x] Remove buffer from Renderer to Scene class
 - [x] Move loop "intersection with objects" from Renderer to Scene
 - [x] Put pixels loop in  Integrator

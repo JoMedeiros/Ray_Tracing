@@ -9,7 +9,7 @@
 #include "flatIntegrator.h"
 #include "flatMaterial.h"
 
-void FlatIntegrator::render( const Scene& scene ) {
+/*void FlatIntegrator::render( const Scene& scene ) {
   int w = scene.buffer->width();
   int h = scene.buffer->height();
 	for ( int j = h-1; j >= 0; --j ) {
@@ -28,7 +28,7 @@ void FlatIntegrator::render( const Scene& scene ) {
       scene.buffer->paint( i, j, color );
 		}
 	}
-}
+}*/
 /**
  * @brief 
  */

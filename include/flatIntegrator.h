@@ -10,11 +10,15 @@
 #define FLAT_INTEGRATOR_H
 
 #include "integrator.h"
+#include "sampleIntegrator.h"
 
-class FlatIntegrator : public Integrator{
+class FlatIntegrator : public SampleIntegrator{
   public:
-    FlatIntegrator(){/* Empty */}
-    void render( const Scene& scene );
+		 FlatIntegrator( shared_ptr<const Camera> cam,
+		                  shared_ptr<Sampler> sampler ) :
+		 SampleIntegrator( cam, sampler ){ /* Empty */ }
+    // FlatIntegrator(){/* Empty */}
+    //void render( const Scene& scene );
 		Color Li( const Ray& ray, const Scene& scene, Sampler& sampler ) const;
 };
 

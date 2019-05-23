@@ -1,0 +1,26 @@
+ +=========================================+
+ |  Ray Tracer Teaching Tool -- RT3, v1.0  |
+ |  copyright DIMAp/UFRN 2017-1019.        |
+ +=========================================+
+
+[1] Scene file parsing initiated...
+Initializing background...
+Initializing camera...
+Half Height: 0.63707
+Half Width: 0.847304
+LLC: (-0.847304, 3.0371, -0.691875)
+Initializing buffer..
+Buffer complete...
+Running setup...
+>>> The Camera frame is:
+    u(1, 0, 0)
+    v(0, 0.928477, -0.371391)
+    w(0, 0.371391, 0.928477)
+
+    >>> Parsing scene successfuly done! <<<
+
+[2] Starting ray tracing progress.
+    Image dimensions in pixels (W x H): 40 x 30.
+    Samples per pixel: 1.
+    Max ray recursion depth: 1.
+    Ray tracing is usually a slow process, please be patient: 
