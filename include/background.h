@@ -1,3 +1,11 @@
+/**
+ * @file	background.h
+ * @author	Josivan Medeiros
+ * @version	1
+ * @date
+ * 	Created:	12th May 2019
+ * 	Last Update:	12th May 2019
+ */
 #ifndef _BACKGROUND_H_
 #define _BACKGROUND_H_
 

@@ -1,0 +1,64 @@
+background: # This defines an interpolated background
+  colors:
+    - [ 153, 204, 255 ] # bottom left
+    - [  18,  10, 143 ] # top left
+    - [  18,  10, 143 ] # top right
+    - [ 153, 204, 255 ] # bottom right -->
+camera: 
+  type: "perspective"
+  name: "cam_normal"
+  # The camera frame 
+  position: [ 0, 4, 0 ] # located at the origin 
+  target: [ 0, 0, -10.0 ] # looking down the -Z axis 
+  up: [ 0, 1, 1 ]       # the camera's up vector 
+  #--- Specific parameters for perspective projection 
+  fovy: 65.0            # The vertical field of view 
+  aspect: 1.33          # Optional parameter, aspect ration W/H 
+  fdistance: 1          # The focal distance  
+  #--- Retina/image dimensions 
+  width: 800
+  height: 600
+  img_file: { name: "spheres", type: "png" }
+
+scene:
+  objects:
+    - type: "sphere"
+      name: "sphere1"
+      material: "gold"
+      radius: 0.4
+      center: [ -1.0, 0.2, -5.0]
+
+    - type: "sphere"
+      name: "sphere2"
+      material: "gold"
+      radius: 0.4
+      center: [ 1.0, 0.2, -8.0 ]
+
+    - type: "sphere" 
+      name: "sphere3"
+      material: "pink"
+      radius: 0.4
+      center: [ -1.0, 0.2, -3.5 ]
+
+    - type: "sphere" 
+      name: "sphere4"
+      material: "green"
+      radius: 500
+      center: [ 0.0, -500.0, -5.5 ]
+
+  materials:
+    - type: "flat" 
+      name: "gold"
+      diffuse: [ 236, 124, 17 ]
+    - type: "flat"
+      name: "green"
+      diffuse: [ 42, 201, 51, ]
+    - type: "flat"
+      name: "pink"
+      diffuse: [ 253, 153, 253 ]
+
+running: # Running setup --->
+  integrator: 
+    type: "normal"
+    spp value: 1
+

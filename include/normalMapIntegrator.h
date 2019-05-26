@@ -10,12 +10,17 @@
 #define NORMAL_MAP_INTEGRATOR_H
 
 #include "integrator.h"
+#include "sampleIntegrator.h"
 
-class NormalMapIntegrator : public Integrator {
+class NormalMapIntegrator : public SampleIntegrator {
   public:
-    NormalMapIntegrator() { /* Empty */ }
-    void render( const Scene& scene);
-    void Li(const Ray& ray, const Scene& scene);
+    //NormalMapIntegrator() { /* Empty */ }
+		NormalMapIntegrator( shared_ptr<const Camera> cam,
+		                  shared_ptr<Sampler> sampler ) :
+		 SampleIntegrator( cam, sampler ){ /* Empty */ }
+    //void render( const Scene& scene);
+    //void Li(const Ray& ray, const Scene& scene);
+		Color Li( const Ray& ray, const Scene& scene, Sampler& sampler ) const;
 };
 
 #endif // NORMAL_MAP_INTEGRATOR_H 

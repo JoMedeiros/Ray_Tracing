@@ -1,3 +1,11 @@
+/**
+ * @file	buffer.h
+ * @author	Josivan Medeiros
+ * @version	1
+ * @date
+ * 	Created:	12th May 2019
+ * 	Last Update:	12th May 2019
+ */
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
 

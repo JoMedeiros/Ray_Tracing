@@ -9,6 +9,7 @@
 #include "sampleIntegrator.h"
 
 void SampleIntegrator::render(const Scene& scene) {
+  cout << "Starting rendering...\n";
   //preprocess();
 
   // TODO This might just be a tile (part) of an image, rendered in parallel.

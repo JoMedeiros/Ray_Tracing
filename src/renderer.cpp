@@ -27,6 +27,7 @@ Renderer::Renderer() {
  * @brief Render image
  */
 void Renderer::run() {
+  cout << "Calling integrator render...\n";
   integrator->render(*scene);
 }
 /**
@@ -160,30 +161,41 @@ void Renderer::setup_camera(const YAML::Node & camera) {
  * @brief Sets the scene
  */
 void Renderer::setup_scene(const YAML::Node & scene) {
-  auto materials = scene["materials"];
   map<string, shared_ptr<Material>> mat_lib;
-  for (auto obj=materials.begin();obj!=materials.end();++obj) {
-    string type = (*obj)["type"].as<string>();
-    if (type.compare("flat") == 0) {
-      Color color = load_vec((*obj)["diffuse"]);
-      string mat_name = (*obj)["name"].as<string>();
-      FlatMaterial mat(color);
-      mat_lib[mat_name] = make_shared<FlatMaterial>(mat);
+  auto materials = scene["materials"];
+  try {
+    for (auto obj=materials.begin();obj!=materials.end();++obj) {
+      string type = (*obj)["type"].as<string>();
+      if (type.compare("flat") == 0) {
+        Color color = load_vec((*obj)["diffuse"]);
+        string mat_name = (*obj)["name"].as<string>();
+        FlatMaterial mat(color);
+        mat_lib[mat_name] = make_shared<FlatMaterial>(mat);
+      }
     }
   }
-
-  auto objects = scene["objects"];
-  for (auto obj = objects.begin(); obj != objects.end(); ++obj) {
-    string type = (*obj)["type"].as<string>();
-    if (type.compare("sphere") == 0) {
-      string name = (*obj)["name"].as<string>();
-      string mat = (*obj)["material"].as<string>();
-      float radius = (*obj)["radius"].as<float>();
-      Vec3 center = load_vec((*obj)["center"]);
-      Sphere* sp = new Sphere(center, radius);
-      sp->set_material(mat_lib[mat]);
-      this->add_primitive(sp);
+  catch (exception & e) {
+    cerr << "Error loading materials\n";
+    cerr << e.what();
+  }
+  try {
+    auto objects = scene["objects"];
+    for (auto obj = objects.begin(); obj != objects.end(); ++obj) {
+      string type = (*obj)["type"].as<string>();
+      if (type.compare("sphere") == 0) {
+        string name = (*obj)["name"].as<string>();
+        string mat = (*obj)["material"].as<string>();
+        float radius = (*obj)["radius"].as<float>();
+        Vec3 center = load_vec((*obj)["center"]);
+        Sphere* sp = new Sphere(center, radius);
+        sp->set_material(mat_lib[mat]);
+        this->add_primitive(sp);
+      }
     }
+  }
+  catch (exception & e) {
+    cerr << "Error loading objects\n";
+    cerr << e.what();
   }
 }
 /**
@@ -201,13 +213,28 @@ void Renderer::setup_running(const YAML::Node & run){
   }
   else if (type.compare("normal") == 0) {
     this->integrator=unique_ptr<NormalMapIntegrator>(
-        new NormalMapIntegrator());
+        new NormalMapIntegrator(cam, sampler));
   }
   else if (type.compare("depth map") == 0) {
-    this->integrator=unique_ptr<DepthIntegrator>(
-        new DepthIntegrator());
+    try {
+      Color near_color = load_color(integrator["near_color"]);
+      Color far_color = load_color(integrator["far_color"]);
+      float near_value = integrator["near_value"].as<float>();
+      float far_value = integrator["far_value"].as<float>();
+      this->integrator= unique_ptr<DepthIntegrator>(
+          new DepthIntegrator(cam, sampler, near_color, far_color, near_value, 
+            far_value));
+    }
+    catch (exception & e) {
+      this->integrator= unique_ptr<DepthIntegrator>(
+          new DepthIntegrator(cam, sampler));
+    }
+
   }
-  
+  else {
+    throw "Integrator is not valid\nThe integrators are:"
+      "\nflat\nnormal\ndepth map\n";
+  }
 }
 /**
  * @brief Sets the renderer parsing a scene.yml file
@@ -230,7 +257,13 @@ void Renderer::setup( string file ) {
     cout << "Buffer complete...\n";
     setup_scene(scene);
     cout << "Running setup...\n";
-    setup_running(running);
+    try {
+      setup_running(running);
+    }
+    catch (exception & e) {
+      cerr << "error setting running options\n";
+      cerr << e.what();
+    }
   }
   catch (std::exception & e) {
     cout << "Error loading config file:\n";
