@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <memory>
 #include "flatMaterial.h"
+#include "blinnPhongMaterial.h"
 #include <map>
 
 using namespace std;
@@ -169,8 +170,17 @@ void Renderer::setup_scene(const YAML::Node & scene) {
       if (type.compare("flat") == 0) {
         Color color = load_vec((*obj)["diffuse"]);
         string mat_name = (*obj)["name"].as<string>();
-        FlatMaterial mat(color);
-        mat_lib[mat_name] = make_shared<FlatMaterial>(mat);
+        mat_lib[mat_name] = shared_ptr<FlatMaterial>(
+            new FlatMaterial(color));
+      }
+      else if (type.compare("blinn") == 0) {
+        string mat_name = (*obj)["name"].as<string>();
+        Color ka = load_vec((*obj)["ambient"]);
+        Color kd = load_vec((*obj)["diffuse"]);
+        Color ke = load_vec((*obj)["especular"]);
+        float glossiness = (*obj)["glossiness"].as<float>();
+        mat_lib[mat_name] = shared_ptr<BlinnPhongMaterial>(
+          new BlinnPhongMaterial( ka, kd, ke, glossiness ));
       }
     }
   }
@@ -215,7 +225,7 @@ void Renderer::setup_running(const YAML::Node & run){
     this->integrator=unique_ptr<NormalMapIntegrator>(
         new NormalMapIntegrator(cam, sampler));
   }
-  else if (type.compare("depth map") == 0) {
+  else if (type.compare("depth_map") == 0) {
     try {
       Color near_color = load_color(integrator["near_color"]);
       Color far_color = load_color(integrator["far_color"]);
@@ -229,11 +239,14 @@ void Renderer::setup_running(const YAML::Node & run){
       this->integrator= unique_ptr<DepthIntegrator>(
           new DepthIntegrator(cam, sampler));
     }
-
+  }
+  else if (type.compare("blinn_phong") == 0) {
+    this->integrator=unique_ptr<BlinnPhongIntegrator>(
+        new BlinnPhongIntegrator( cam, sampler ));
   }
   else {
-    throw "Integrator is not valid\nThe integrators are:"
-      "\nflat\nnormal\ndepth map\n";
+    throw invalid_argument("Integrator is not valid. The valid"
+        "integrators are:\nflat\nnormal\ndepth_map\n");
   }
 }
 /**
@@ -257,13 +270,7 @@ void Renderer::setup( string file ) {
     cout << "Buffer complete...\n";
     setup_scene(scene);
     cout << "Running setup...\n";
-    try {
-      setup_running(running);
-    }
-    catch (exception & e) {
-      cerr << "error setting running options\n";
-      cerr << e.what();
-    }
+    setup_running(running);
   }
   catch (std::exception & e) {
     cout << "Error loading config file:\n";

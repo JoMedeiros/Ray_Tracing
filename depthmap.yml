@@ -59,7 +59,7 @@ scene:
 
 running: # Running setup --->
   integrator: 
-    type: "depth map"
+    type: "depth_map"
     spp value: 1
     near_color: [ 0, 255, 0 ]
     far_color: [ 0, 0, 0 ]

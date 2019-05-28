@@ -31,7 +31,7 @@ OPTIMIZE = -O03
 DEBUG = -g -D BACKTRACKING_PLAYER
 COMPILE_FLAGS = -std=c++11 -Wall -Wextra
 #COMPILE_FLAGS = -std=c++11 -Wall -Wextra -g
-INCLUDES = -I include/
+INCLUDES = -I include/ -I include/integrators -I include/lights
 #INCLUDES = -I include/ -I /usr/local/include
 # Space-separated pkg-config libraries used by this project
 LIBS = -L lib/ -lyaml-cpp

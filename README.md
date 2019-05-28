@@ -47,25 +47,25 @@ make
   - [x] NormalMapIntegrator : public SampleIntegrator
   - [x] DepthIntegrator : public SampleIntegrator
     - [ ] Change from ray length to actual distance from camera
+    - [x] Allow user to set start and end color
+    - [x] Allow user to set min a max distances
+  - [ ] Implement BlinnPhongIntegrator
+- [ ] Lights
+  - [ ] Create lights by file
 - [ ] Use samples value to initialize integrators
-- [ ] Put background in yaml file inside scene tag
 - [ ] Implement classes as specified in the code examples of 
 project 4
 - [x] Remove buffer from Renderer to Scene class
 - [x] Move loop "intersection with objects" from Renderer to Scene
 - [x] Put pixels loop in  Integrator
 - [ ] Organize folders include and src in subdirectories
-- [ ] Implement DepthIntegrator
-  - [ ] Allow user to set start and end color
-  - [ ] Allow user to set min a max distances
-- [x] Implement NormalMapIntegrator
 - [ ] Implement Material
 - [ ] create Triangle class
 - [ ] create Triangle Mesh class
 - [ ] Implement BVH
 - [ ] Parse OBJ
-- [ ] Implement save_img function in Renderer class
+- [x] Implement save_img function in Renderer class
 - [ ] Implement Sampler class
-- [ ] Implement BlinnPhongIntegrator
 - [ ] Move camera from Scene to Integrator
+- [ ] Put background in yaml file inside scene tag
 

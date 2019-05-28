@@ -21,6 +21,7 @@
 #include "flatIntegrator.h"
 #include "depthIntegrator.h"
 #include "normalMapIntegrator.h"
+#include "blinnPhongIntegrator.h"
 
 class Renderer 
 {

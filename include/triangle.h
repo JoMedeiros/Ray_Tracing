@@ -10,8 +10,9 @@
 #define TRIANGLE_H_
 
 #include "vec3.h"
+#include "shape.h"
 
-class Triangle {
+class Triangle : public Shape {
   public:
     /**
      * @brief Triangle class constructor

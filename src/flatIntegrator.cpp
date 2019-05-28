@@ -9,28 +9,14 @@
 #include "flatIntegrator.h"
 #include "flatMaterial.h"
 
-/*void FlatIntegrator::render( const Scene& scene ) {
-  int w = scene.buffer->width();
-  int h = scene.buffer->height();
-	for ( int j = h-1; j >= 0; --j ) {
-		for ( int i = 0; i < w; ++i ) {
-			float v = float(i+0.5) / float(w), 
-            u = float(j+0.5) / float(h);
-      Ray ray = scene.camera->generate_ray(v, u);
-      //Ray ray = camera->generate_ray( float(i)/float(w), 
-          //float(j)/ float(h));
-      cout << "pixel (" << j << ", " << i << ") " 
-        << "ray: " << ray << "\n";
-      Sampler spp;
-      Color color = Li(ray, scene, spp);
-      //Color color = scene.bg->sample(u, v);
-      //if (scene.intersect_p(ray)) color = Color (255,0,0);
-      scene.buffer->paint( i, j, color );
-		}
-	}
-}*/
 /**
- * @brief 
+ * @brief Light integrator.
+ *
+ * @param ray
+ * @param scene
+ * @param sampler
+ *
+ * @return 
  */
 Color FlatIntegrator::Li( const Ray& ray, const Scene& scene, Sampler& sampler ) const {
   //SurfaceInteraction si;
