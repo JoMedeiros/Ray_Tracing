@@ -5,7 +5,7 @@
  * @brief
  * @date
  *  Created:  27 mai 2019
- *  Last Update: 29 mai 2019 (15:19:44)
+ *  Last Update: 29 mai 2019 (17:20:27)
  */
 #include "blinnPhongIntegrator.h"
 #include "blinnPhongMaterial.h"
@@ -26,13 +26,12 @@ Color BlinnPhongIntegrator::Li( const Ray& ray, const Scene& scene,
     BlinnPhongMaterial *bfm = 
       dynamic_cast< BlinnPhongMaterial *>(m);
     // Loop through lights
-    for (auto l = scene.lights.begin(); 
-        l != scene.lights.end(); ++l) {
-      Light* li = (*l).get();
-      if (AmbientLight* light = dynamic_cast<AmbientLight*>(li)){
+    for (auto & li : scene.lights) {
+      //Light* li = (*l).get();
+      if (auto light = dynamic_cast<AmbientLight*>(li.get())){
         L = L + 255 * light->intensity() * bfm->ka();
       }
-      if (PointLight* light = dynamic_cast<PointLight*>(li)){
+      if (PointLight* light = dynamic_cast<PointLight*>(li.get())){
         Vec3 I = unit_vector(light->origin() - si.p);
         Vec3 H = unit_vector(I + -ray.direction());
         float t = max(dot(I, si.n), 0.0f);
@@ -41,7 +40,6 @@ Color BlinnPhongIntegrator::Li( const Ray& ray, const Scene& scene,
         if (scene.intersect_p(shadow_ray)) t = 0;
         L = truncate( L + 255*t*(bfm->kd() * light->intensity())
             + 255*pow(NH, bfm->glossiness())*bfm->ks()*light->intensity());
-          //L = L + 255 * light->intensity() * bfm->ka();
       }
     }
     float t = dot(Vec3(0,1,0), si.n);

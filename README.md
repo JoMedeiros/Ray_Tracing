@@ -17,6 +17,13 @@ make
 ./bin/img_gen <yaml_file> > <log_file>
 ```
 
+Example files:
+
+- `blinnphong.yml` : An example of a scene to be rendered with 
+Blinn Phong Integrator.
+- `normal.yml` : An example of a scene that generate colors base
+on the normals of objects (like a normal map).
+
 ## Checklist
 
 - [x] Buffer
@@ -52,6 +59,10 @@ make
   - [ ] Implement BlinnPhongIntegrator
 - [ ] Lights
   - [ ] Create lights by file
+    - [x] AmbientLight
+    - [x] PointLight
+- [ ] Get background with ray
+  - [ ] Get background from spherical map image
 - [ ] Use samples value to initialize integrators
 - [ ] Implement classes as specified in the code examples of 
 project 4

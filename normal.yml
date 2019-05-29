@@ -18,7 +18,7 @@ camera:
   #--- Retina/image dimensions 
   width: 800
   height: 600
-  img_file: { name: "spheres", type: "png" }
+  img_file: { name: "normal", type: "png" }
 
 scene:
   objects:
