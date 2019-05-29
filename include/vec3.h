@@ -63,6 +63,9 @@ inline Vec3 operator/(const Vec3 &v1, float x)
 inline Vec3 operator*(float x, const Vec3 &v)
 { return Vec3(v.e[0] * x, v.e[1] * x, v.e[2] * x); }
 
+inline Vec3 operator*(const Vec3 &v1, const Vec3 &v2)
+{ return Vec3(v1[0] * v2[0], v1[1] * v2[1], v1[2] * v2[2]); }
+
 inline bool operator==(const Vec3 &v1, const Vec3 &v2)
 { return (v1[0] == v2[0]) and (v1[1] == v2[1]) and (v1[2] == v2[2]); }
 
@@ -84,6 +87,11 @@ inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) {
 
 inline Vec3 unit_vector(Vec3 v)
 { return v / v.length(); }
+
+inline Vec3 truncate(Vec3 v)
+{ return Vec3(v[0] > 255 ? 255 : v[0],
+              v[1] > 255 ? 255 : v[1],
+              v[2] > 255 ? 255 : v[2]); }
 
 #endif // VEC3_H
 

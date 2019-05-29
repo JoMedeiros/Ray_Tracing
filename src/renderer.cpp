@@ -14,6 +14,8 @@
 #include "flatMaterial.h"
 #include "blinnPhongMaterial.h"
 #include <map>
+#include "ambientLight.h"
+#include "pointLight.h"
 
 using namespace std;
 
@@ -177,10 +179,10 @@ void Renderer::setup_scene(const YAML::Node & scene) {
         string mat_name = (*obj)["name"].as<string>();
         Color ka = load_vec((*obj)["ambient"]);
         Color kd = load_vec((*obj)["diffuse"]);
-        Color ke = load_vec((*obj)["especular"]);
+        Color ks = load_vec((*obj)["specular"]);
         float glossiness = (*obj)["glossiness"].as<float>();
         mat_lib[mat_name] = shared_ptr<BlinnPhongMaterial>(
-          new BlinnPhongMaterial( ka, kd, ke, glossiness ));
+          new BlinnPhongMaterial( ka, kd, ks, glossiness ));
       }
     }
   }
@@ -206,6 +208,26 @@ void Renderer::setup_scene(const YAML::Node & scene) {
   catch (exception & e) {
     cerr << "Error loading objects\n";
     cerr << e.what();
+  }
+  try {
+    auto lights = scene["lights"];
+    for (auto l = lights.begin(); l != lights.end(); ++l) {
+      string type = (*l)["type"].as<string>();
+      if (type.compare("ambient") == 0) {
+        Color intensity = load_vec((*l)["intensity"]);
+        this->scene->lights.push_back(unique_ptr<AmbientLight>(
+              new AmbientLight(intensity)));
+      }
+      if (type.compare("point") == 0) {
+        Color intensity = load_vec((*l)["intensity"]);
+        Color position = load_vec((*l)["position"]);
+        this->scene->lights.push_back(unique_ptr<PointLight>(
+              new PointLight(position, intensity)));
+      }
+    }
+  }
+  catch (exception & e) {
+    cerr << "Error loading file\n";
   }
 }
 /**

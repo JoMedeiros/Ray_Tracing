@@ -5,7 +5,7 @@
  * @brief
  * @date
  *  Created:  27 mai 2019
- *  Last Update: 27 mai 2019 (18:45:11)
+ *  Last Update: 29 mai 2019 (14:58:36)
  */
 #ifndef BLINN_PHONG_MATERIAL_H
 #define BLINN_PHONG_MATERIAL_H
@@ -15,17 +15,18 @@ class BlinnPhongMaterial : public Material {
   private:
     Color kambient;
     Color kdifuse; // diffuse constant
-    Color kespecular;
+    Color kspecular;
     float _glossiness;
   public:
-    BlinnPhongMaterial(Color ka, Color kd, Color ke, 
+    BlinnPhongMaterial(Color ka, Color kd, Color ks, 
         float glossiness) : 
-      kambient(ka), kdifuse(kd), kespecular(ke), 
+      kambient(ka), kdifuse(kd), kspecular(ks), 
       _glossiness(glossiness) { /* Empty */ }
     //Getters
     Color ka(){ return kambient; }
     Color kd(){ return kdifuse; }
-    Color ke(){ return kespecular; }
+    Color ks(){ return kspecular; }
+    float glossiness(){ return _glossiness; }
   };
 
 #endif //BLINN_PHONG_MATERIAL_H

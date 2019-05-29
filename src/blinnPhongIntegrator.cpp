@@ -5,10 +5,12 @@
  * @brief
  * @date
  *  Created:  27 mai 2019
- *  Last Update: 28 mai 2019 (15:44:38)
+ *  Last Update: 29 mai 2019 (15:19:44)
  */
 #include "blinnPhongIntegrator.h"
 #include "blinnPhongMaterial.h"
+#include "ambientLight.h"
+#include "pointLight.h"
 
 Color BlinnPhongIntegrator::Li( const Ray& ray, const Scene& scene,
     Sampler& sampler ) const {
@@ -23,13 +25,31 @@ Color BlinnPhongIntegrator::Li( const Ray& ray, const Scene& scene,
     Material * m = si.primitive->get_material().get();
     BlinnPhongMaterial *bfm = 
       dynamic_cast< BlinnPhongMaterial *>(m);
-    // Simulating light with direction (0,-1,0)
+    // Loop through lights
+    for (auto l = scene.lights.begin(); 
+        l != scene.lights.end(); ++l) {
+      Light* li = (*l).get();
+      if (AmbientLight* light = dynamic_cast<AmbientLight*>(li)){
+        L = L + 255 * light->intensity() * bfm->ka();
+      }
+      if (PointLight* light = dynamic_cast<PointLight*>(li)){
+        Vec3 I = unit_vector(light->origin() - si.p);
+        Vec3 H = unit_vector(I + -ray.direction());
+        float t = max(dot(I, si.n), 0.0f);
+        float NH = max(dot(si.n, H), 0.0f);
+        Ray shadow_ray(si.p + 0.001*I, I);
+        if (scene.intersect_p(shadow_ray)) t = 0;
+        L = truncate( L + 255*t*(bfm->kd() * light->intensity())
+            + 255*pow(NH, bfm->glossiness())*bfm->ks()*light->intensity());
+          //L = L + 255 * light->intensity() * bfm->ka();
+      }
+    }
     float t = dot(Vec3(0,1,0), si.n);
     if (t < 0) t = 0;
     if (t > 1) t = 255;
-    Ray shadow_ray(si.p, Vec3(0,20,0));
-    if (scene.intersect_p(shadow_ray)) t = 0;
-    L = t*255*bfm->kd() + 255*bfm->ka(); // Call a method present only in FlatMaterial.
+    Vec3 light(1,4,0);
+    //L = truncate(
+    //    L + t*255*bfm->kd());
   }
   return L;
 }

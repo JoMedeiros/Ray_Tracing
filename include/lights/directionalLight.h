@@ -5,7 +5,7 @@
  * @brief
  * @date
  *  Created:  27 mai 2019
- *  Last Update: 27 mai 2019 (16:29:28)
+ *  Last Update: 29 mai 2019 (09:52:56)
  */
 #ifndef DIRECTIONAL_LIGHT_H
 #define DIRECTIONAL_LIGHT_H
@@ -17,7 +17,7 @@ class DirectionalLight : public Light {
     Vec3 _direction;
   public:
     DirectionalLight(Vec3 direction) : _direction(direction) {}
-    virtual Ray generate_ray(Point3 p){
+    Ray generate_ray(Point3 p){
       Ray r (p , _direction);
       return r;
     }

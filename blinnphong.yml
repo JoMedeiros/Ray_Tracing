@@ -8,11 +8,11 @@ camera:
   type: "perspective"
   name: "cam_flat"
   # The camera frame 
-  position: [ 0, 4, 0 ] # located at the origin 
+  position: [ 0, 20, 20 ] # located at the origin 
   target: [ 0, 0, -10.0 ] # looking down the -Z axis 
   up: [ 0, 1, 1 ]       # the camera's up vector 
   #--- Specific parameters for perspective projection 
-  fovy: 65.0            # The vertical field of view 
+  fovy: 45.0            # The vertical field of view 
   aspect: 1.33          # Optional parameter, aspect ration W/H 
   fdistance: 1          # The focal distance  
   #--- Retina/image dimensions 
@@ -21,18 +21,28 @@ camera:
   img_file: { name: "spheres", type: "png" }
 
 scene:
+  #-- Lights 
+  lights:
+    - type: "ambient"
+      name: "ambient_light"
+      intensity: [ 1.0, 1.0, 1.0 ]
+    - type: "point"
+      name: "point_light"
+      intensity: [ 0.7, 0.7, 0.7 ]
+      position: [ 0.0, 12.1, -1.0 ]
+  #-- Objects
   objects:
     - type: "sphere"
       name: "sphere1"
       material: "grey"
       radius: 0.4
-      center: [ 1.2, 2.9, -8.0]
+      center: [ 1.2, 1.9, -4.0 ]
 
     - type: "sphere"
       name: "sphere2"
       material: "redish"
       radius: 0.4
-      center: [ 1.0, 0.3, -8.0 ]
+      center: [ 1.0, 0.4, -4.0 ]
 
     - type: "sphere" 
       name: "sphere3"
@@ -45,8 +55,7 @@ scene:
       material: "blueish"
       radius: 500
       center: [ 0.0, -500.0, -3.5 ]
-
-      #--- Library of materials --
+  #--- Library of materials --
   materials:
     - type: "blinn"
       name: "redish"
@@ -67,14 +76,14 @@ scene:
       ambient: [ 0.1, 0.1, 0.1 ]
       diffuse: [ 0.1, 0.2, 0.9 ]
       specular: [ 0.8, 0.8, 0.8 ]
-      glossiness: 20
+      glossiness: 32
 
     - type: "blinn"
       name: "grey"
       ambient: [ 0.1, 0.1, 0.1 ]
       diffuse: [ 0.8, 0.8, 0.8 ]
-      specular: [ 0, 0, 0 ]
-      glossiness: 8
+      specular: [ 0.9, 0.9, 0.9 ]
+      glossiness: 128
 
   #!-- Lights -->
   lights:

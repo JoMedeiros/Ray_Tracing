@@ -12,9 +12,13 @@
 #include "ray.h"
 
 class Light {
+  private:
+    Color _intensity;
   public:
-    Light(){}
-    virtual Ray generate_ray(Point3 p) = 0;
+    Light(Color intensity) : _intensity(intensity){}
+    virtual ~Light() = default;
+    //Ray generate_ray(Point3 p) = 0;
+    Color intensity(){return _intensity;}
 };
 #endif // LIGHT_H
 
