@@ -5,7 +5,7 @@
  * @brief
  * @date
  *  Created:  30 mai 2019
- *  Last Update: 30 mai 2019 (14:30:31)
+ *  Last Update: 05 jun 2019 (10:11:01)
  */
 #ifndef GEOMETRIC_PRIMITIVE_H
 #define GEOMETRIC_PRIMITIVE_H
@@ -14,8 +14,12 @@
 #include "shape.h"
 
 class GeometricPrimitive : public Primitive {
+  public:
+    GeometricPrimitive(Shape * shape){
+      _shape = unique_ptr<Shape>(shape);
+    }
   private:
-    unique_ptr<Shape> shape;
+    unique_ptr<Shape> _shape;
     /**
      * @brief Verify if a ray intersects the primitive and fill
      * a pointer to a SurfaceInteraction with informations about

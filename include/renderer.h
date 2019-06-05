@@ -18,6 +18,8 @@
 #include "orthoCamera.h"
 #include "perspectiveCamera.h"
 #include "sphere.h"
+#include "triangle.h"
+#include "geometricPrimitive.h"
 #include "flatIntegrator.h"
 #include "depthIntegrator.h"
 #include "normalMapIntegrator.h"
@@ -40,9 +42,10 @@ class Renderer
     void setup_bg(const YAML::Node & bg);
     void setup_camera(const YAML::Node & camera);
     void setup_scene(const YAML::Node & scene);
+    void setup_lights(const YAML::Node & lights);
     void setup_running(const YAML::Node & run);
     void save_img();
-    void add_primitive(Sphere* &sp);
+    void add_primitive(Primitive* sp);
 };
 
 #endif

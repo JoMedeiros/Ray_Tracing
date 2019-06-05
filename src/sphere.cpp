@@ -15,7 +15,6 @@ bool Sphere::intersect( const Ray& r, SurfaceInteraction *s) const {
   s->n = n;
   s->p = p;
   s->wo = -r.direction();
-  s->primitive = this;
   // cout << "Normal: " << s->n << "\n";
   return (t >= 0);
 }

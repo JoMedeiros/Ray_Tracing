@@ -16,7 +16,7 @@
 #include "ray.h"
 #include "surfaceInteraction.h"
 
-class Sphere : public Primitive {
+class Sphere : public Shape {
  private:
   Vec3 center;
   float radius;

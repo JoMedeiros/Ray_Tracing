@@ -18,7 +18,7 @@ camera:
   #--- Retina/image dimensions 
   width: 1000
   height: 750
-  img_file: { name: "blinn_phong_example", type: "png" }
+  img_file: { name: "triangle_example", type: "png" }
 
 scene:
   #-- Lights 
@@ -40,11 +40,13 @@ scene:
       position: [ -2.2, 3.9, -4.0 ]
   #-- Objects
   objects:
-    - type: "sphere"
-      name: "sphere1"
+    - type: "triangle"
+      name: "triangle"
       material: "grey"
       radius: 0.4
-      center: [ 1.2, 0.4, -2.0 ]
+      v0: [ 1.2, 0.4, -2.0 ]
+      v1: [ 2.2, 0.4, -2.0 ]
+      v2: [ 2.2, 2.4, -2.0 ]
 
     - type: "sphere"
       name: "sphere2"

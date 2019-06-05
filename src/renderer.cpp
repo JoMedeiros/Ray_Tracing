@@ -3,8 +3,8 @@
  * @author	Josivan Medeiros
  * @version	1
  * @date
- * 	Created:	12th May 2019
- * 	Last Update:	17th May 2019
+ *  Created:  12 may 2019
+ *  Last Update: 05 jun 2019 (10:57:47)
  */
 #include "renderer.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -39,7 +39,7 @@ void Renderer::run() {
  *
  * @param sp  A Sphere object.
  */
-void Renderer::add_primitive(Sphere* & sp){
+void Renderer::add_primitive(Primitive* sp){
   scene->primitives.push_back(sp);
 }
 
@@ -201,8 +201,20 @@ void Renderer::setup_scene(const YAML::Node & scene) {
         float radius = (*obj)["radius"].as<float>();
         Vec3 center = load_vec((*obj)["center"]);
         Sphere* sp = new Sphere(center, radius);
-        sp->set_material(mat_lib[mat]);
-        this->add_primitive(sp);
+        GeometricPrimitive * gp = new GeometricPrimitive(sp);
+        gp->set_material(mat_lib[mat]);
+        this->add_primitive(gp);
+      }
+      else if (type.compare("triangle") == 0) {
+        string name = (*obj)["name"].as<string>();
+        string mat = (*obj)["material"].as<string>();
+        Vec3 p0 = load_vec((*obj)["v0"]);
+        Vec3 p1 = load_vec((*obj)["v1"]);
+        Vec3 p2 = load_vec((*obj)["v2"]);
+        Triangle* t = new Triangle(p0, p1, p2);
+        GeometricPrimitive * gp = new GeometricPrimitive(t);
+        gp->set_material(mat_lib[mat]);
+        this->add_primitive(gp);
       }
     }
   }
@@ -210,8 +222,15 @@ void Renderer::setup_scene(const YAML::Node & scene) {
     cerr << "Error loading objects\n";
     cerr << e.what();
   }
+  setup_lights(scene["lights"]);
+}
+/**
+ * @brief Parses the lights node in yml file and sets the lights.
+ *
+ * @param lights The yaml Node.
+ */
+void Renderer::setup_lights(const YAML::Node & lights) {
   try {
-    auto lights = scene["lights"];
     for (auto l = lights.begin(); l != lights.end(); ++l) {
       string type = (*l)["type"].as<string>();
       if (type.compare("ambient") == 0) {

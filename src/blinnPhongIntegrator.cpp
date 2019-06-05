@@ -5,7 +5,7 @@
  * @brief
  * @date
  *  Created:  27 mai 2019
- *  Last Update: 05 jun 2019 (09:46:54)
+ *  Last Update: 05 jun 2019 (10:50:51)
  */
 #include "blinnPhongIntegrator.h"
 #include "blinnPhongMaterial.h"
