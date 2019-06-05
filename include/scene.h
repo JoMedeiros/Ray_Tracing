@@ -25,7 +25,7 @@ class Scene {
     Buffer* buffer;
     Camera* camera;
     vector<Primitive*> primitives;
-    vector<unique_ptr<Light>> lights; // list of lights
+    vector<shared_ptr<Light>> lights; // list of lights
     shared_ptr< Background > background; // The background object.
   //private:
     shared_ptr<Primitive> aggregate; // The scene graph of objects, acceleration structure.
@@ -33,8 +33,8 @@ class Scene {
     //=== Public interface
   public:
     Scene( shared_ptr<Primitive> ag, const vector<shared_ptr<Light>>& ls )
-    //  : lights{ls}
-    //, aggregate{ag}
+      : lights{ls}
+    , aggregate{ag}
     {/* empty */}
     /// Determines the intersection info; return true if there is an intersection.
     bool intersect( const Ray& r, SurfaceInteraction *isect ) const;

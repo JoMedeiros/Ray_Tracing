@@ -16,6 +16,7 @@
 #include <map>
 #include "ambientLight.h"
 #include "pointLight.h"
+#include "directionalLight.h"
 
 using namespace std;
 
@@ -218,11 +219,17 @@ void Renderer::setup_scene(const YAML::Node & scene) {
         this->scene->lights.push_back(unique_ptr<AmbientLight>(
               new AmbientLight(intensity)));
       }
-      if (type.compare("point") == 0) {
+      else if (type.compare("point") == 0) {
         Color intensity = load_vec((*l)["intensity"]);
         Color position = load_vec((*l)["position"]);
         this->scene->lights.push_back(unique_ptr<PointLight>(
               new PointLight(position, intensity)));
+      }
+      else if (type.compare("directional") == 0) {
+        Color intensity = load_vec((*l)["intensity"]);
+        Color direction = load_vec((*l)["direction"]);
+        this->scene->lights.push_back(unique_ptr<DirectionalLight>(
+              new DirectionalLight(direction, intensity)));
       }
     }
   }

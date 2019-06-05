@@ -5,20 +5,22 @@
  * @brief
  * @date
  *  Created:  27 mai 2019
- *  Last Update: 29 mai 2019 (17:20:27)
+ *  Last Update: 05 jun 2019 (09:46:54)
  */
 #include "blinnPhongIntegrator.h"
 #include "blinnPhongMaterial.h"
 #include "ambientLight.h"
 #include "pointLight.h"
+#include "directionalLight.h"
 
 Color BlinnPhongIntegrator::Li( const Ray& ray, const Scene& scene,
     Sampler& sampler ) const {
+  for (unsigned i = 0; i < sampler.get_samples(); ++i){
+  }
   Color L(0,0,0); // The radiance
   // Find closest ray intersection or return background radiance.
   SurfaceInteraction si;  
   if (!scene.intersect(ray, &si)) {
-    // This might be just:
     L = scene.bg->sample(1,1); //TODO implement bg sample with ray
   }
   else {
@@ -27,27 +29,38 @@ Color BlinnPhongIntegrator::Li( const Ray& ray, const Scene& scene,
       dynamic_cast< BlinnPhongMaterial *>(m);
     // Loop through lights
     for (auto & li : scene.lights) {
-      //Light* li = (*l).get();
       if (auto light = dynamic_cast<AmbientLight*>(li.get())){
-        L = L + 255 * light->intensity() * bfm->ka();
+        L = truncate(L + 255 * light->intensity() * bfm->ka());
       }
-      if (PointLight* light = dynamic_cast<PointLight*>(li.get())){
+      else if (PointLight* light = dynamic_cast<PointLight*>(li.get())){
         Vec3 I = unit_vector(light->origin() - si.p);
         Vec3 H = unit_vector(I + -ray.direction());
+        float a = bfm->glossiness();
         float t = max(dot(I, si.n), 0.0f);
         float NH = max(dot(si.n, H), 0.0f);
+        SurfaceInteraction shadow_si;
         Ray shadow_ray(si.p + 0.001*I, I);
+        // If the distance to object hit is greater than the 
+        // distance to the light point, the object does not oclude
+        if (scene.intersect(shadow_ray, &shadow_si) and
+            (light->origin() - si.p).length() > 
+            (shadow_si.p - si.p).length()) t = 0;
+        L = truncate( L + 255*t*(bfm->kd() * light->intensity())
+            + 255*pow(NH, a)*bfm->ks()*light->intensity());
+      }
+      else if (DirectionalLight* light = dynamic_cast<DirectionalLight*>(li.get())){
+        Vec3 I = unit_vector(-light->direction());
+        Vec3 H = unit_vector(I + -ray.direction());
+        float a = bfm->glossiness();
+        float t = max(dot(I, si.n), 0.0f);
+        float NH = max(dot(si.n, H), 0.0f);
+        // TODO Verify min and max t
+        Ray shadow_ray(si.p, I);
         if (scene.intersect_p(shadow_ray)) t = 0;
         L = truncate( L + 255*t*(bfm->kd() * light->intensity())
-            + 255*pow(NH, bfm->glossiness())*bfm->ks()*light->intensity());
+            + 255*pow(NH, a)*bfm->ks()*light->intensity());
       }
     }
-    float t = dot(Vec3(0,1,0), si.n);
-    if (t < 0) t = 0;
-    if (t > 1) t = 255;
-    Vec3 light(1,4,0);
-    //L = truncate(
-    //    L + t*255*bfm->kd());
   }
   return L;
 }

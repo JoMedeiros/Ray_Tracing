@@ -61,6 +61,15 @@ on the normals of objects (like a normal map).
   - [ ] Create lights by file
     - [x] AmbientLight
     - [x] PointLight
+      - [ ] Verify if intersection is between the object and light
+    - [ ] DirectionalLight
+- [ ] Triangle
+- [ ] Implement Aggregate class
+  - Primitive
+    - GeometricPrimitive
+    - MediumPrimitive
+    - ...
+- move objects initialization to store in m_aggregate
 - [ ] Get background with ray
   - [ ] Get background from spherical map image
 - [ ] Use samples value to initialize integrators
@@ -70,7 +79,7 @@ project 4
 - [x] Move loop "intersection with objects" from Renderer to Scene
 - [x] Put pixels loop in  Integrator
 - [ ] Organize folders include and src in subdirectories
-- [ ] Implement Material
+- [x] Implement Material
 - [ ] create Triangle class
 - [ ] create Triangle Mesh class
 - [ ] Implement BVH
@@ -79,4 +88,5 @@ project 4
 - [ ] Implement Sampler class
 - [ ] Move camera from Scene to Integrator
 - [ ] Put background in yaml file inside scene tag
+
 

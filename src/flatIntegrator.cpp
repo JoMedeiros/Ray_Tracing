@@ -3,8 +3,8 @@
  * @author	Josivan Medeiros
  * @version	1
  * @date
- * 	Created:	14th May 2019
- * 	Last Update:	14th May 2019
+ * 	Created: 14 may 2019
+ *  Last Update: 30 mai 2019 (08:24:01)
  */
 #include "flatIntegrator.h"
 #include "flatMaterial.h"
@@ -19,6 +19,8 @@
  * @return 
  */
 Color FlatIntegrator::Li( const Ray& ray, const Scene& scene, Sampler& sampler ) const {
+  for (unsigned i = 0; i < sampler.get_samples(); ++i){
+  }
   //SurfaceInteraction si;
   Color L(0,0,0); // The radiance
   // Find closest ray intersection or return background radiance.
