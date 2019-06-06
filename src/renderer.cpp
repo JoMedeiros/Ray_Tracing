@@ -4,7 +4,7 @@
  * @version	1
  * @date
  *  Created:  12 may 2019
- *  Last Update: 05 jun 2019 (10:57:47)
+ *  Last Update: 06 jun 2019 (15:00:56)
  */
 #include "renderer.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -202,7 +202,10 @@ void Renderer::setup_scene(const YAML::Node & scene) {
         Vec3 center = load_vec((*obj)["center"]);
         Sphere* sp = new Sphere(center, radius);
         GeometricPrimitive * gp = new GeometricPrimitive(sp);
-        gp->set_material(mat_lib[mat]);
+        if (auto mate = mat_lib[mat])
+          gp->set_material(mat_lib[mat]);
+        else throw invalid_argument("Integrator is not valid. The"
+            " valid integrators are:\nflat\nnormal\ndepth_map\n");
         this->add_primitive(gp);
       }
       else if (type.compare("triangle") == 0) {
@@ -213,7 +216,10 @@ void Renderer::setup_scene(const YAML::Node & scene) {
         Vec3 p2 = load_vec((*obj)["v2"]);
         Triangle* t = new Triangle(p0, p1, p2);
         GeometricPrimitive * gp = new GeometricPrimitive(t);
-        gp->set_material(mat_lib[mat]);
+        if (auto mate = mat_lib[mat]) 
+          gp->set_material(mat_lib[mat]);
+        else throw invalid_argument("Integrator is not valid. The"
+            " valid integrators are:\nflat\nnormal\ndepth_map\n");
         this->add_primitive(gp);
       }
     }

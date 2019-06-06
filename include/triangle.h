@@ -1,4 +1,5 @@
-/**@file	include/triangle.h
+/**
+ * @file	include/triangle.h
  * @author	josivanmedeiros
  * @version	1
  * @date
@@ -21,6 +22,7 @@ class Triangle : public Shape {
       v0 = p0;
       v1 = p1;
       v2 = p2;
+      culling = false;
     }
     /**
      * @brief Calls the intersection function of the shape.
@@ -49,6 +51,7 @@ class Triangle : public Shape {
     Vec3 v0;
     Vec3 v1;
     Vec3 v2;
+    bool culling;
 };
 
 #endif

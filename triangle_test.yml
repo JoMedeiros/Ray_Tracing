@@ -26,27 +26,37 @@ scene:
     - type: "ambient"
       name: "ambient_light"
       intensity: [ 1.0, 1.0, 1.0 ]
-    - type: "point"
+      #- type: "point"
+      #  name: "point_light"
+      #  intensity: [ 0.7, 0.7, 0.7 ]
+      #  position: [ 1.2, 12.1, -2.0 ]
+      #- type: "point"
+      #  name: "point_light"
+      #  intensity: [ 0.2, 0.7, 0.2 ]
+      #  position: [ 1.0, 3.9, -4.0 ]
+      #- type: "point"
+      #  name: "point_light"
+      #  intensity: [ 0.7, 0.2, 0.2 ]
+      #  position: [ -2.2, 3.9, -4.0 ]
+    - type: "directional"
       name: "point_light"
-      intensity: [ 0.7, 0.7, 0.7 ]
-      position: [ 1.2, 12.1, -2.0 ]
-    - type: "point"
-      name: "point_light"
-      intensity: [ 0.2, 0.7, 0.2 ]
-      position: [ 1.0, 3.9, -4.0 ]
-    - type: "point"
-      name: "point_light"
-      intensity: [ 0.7, 0.2, 0.2 ]
-      position: [ -2.2, 3.9, -4.0 ]
+      intensity: [ 0.9, 0.9, 0.9 ]
+      direction: [ -1.2, -1.1, 0.0 ]
   #-- Objects
   objects:
     - type: "triangle"
       name: "triangle"
-      material: "grey"
+      material: "redish"
       radius: 0.4
-      v0: [ 1.2, 0.4, -2.0 ]
-      v1: [ 2.2, 0.4, -2.0 ]
-      v2: [ 2.2, 2.4, -2.0 ]
+      v0: [ 0.0, 0.4, 0.0 ]
+      v1: [ 1.0, 0.4, -4.0 ]
+      v2: [ -1.0, 0.4, -3.5 ]
+
+    - type: "sphere" 
+      name: "sphere1"
+      material: "greenish"
+      radius: 0.4
+      center: [ 0.0, 0.4, 0.0 ]
 
     - type: "sphere"
       name: "sphere2"

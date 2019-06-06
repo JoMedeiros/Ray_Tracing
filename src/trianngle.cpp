@@ -5,7 +5,7 @@
  * @brief
  * @date
  *  Created:  03 jun 2019
- *  Last Update: 04 jun 2019 (07:49:06)
+ *  Last Update: 06 jun 2019 (14:48:36)
  */
 #include "triangle.h"
 
@@ -19,28 +19,51 @@
  * @return True if the ray intersects the object, false 
  * otherwise.
  */
-bool Triangle::intersect( const Ray& r, SurfaceInteraction *s) 
-  const{
-    Vec3 v = v1 - v0;
-    Vec3 u = v2 - v1;
-    Vec3 n = cross(v, u);
-    float Area = n.length();
-    float t;// the t parameter for the ray
-    Point3 p0 = v0;
-    Point3 l0 = r.origin();
-    Point3 l = r.direction();
-    t = dot((p0 - l0), n) / dot(l, n);
-    Point3 P = r.origin() + t*r.direction();
-    float x = cross((P-v0),(P-v1)).length() / Area;
-    if (x < 0.0f ) return false;
-    float y = cross((P-v1),(P-v2)).length() / Area;
-    if (y < 0.0f ) return false;
-    float z = cross((P-v2),(P-v0)).length() / Area;
-    if (z < 0.0f ) return false;
-    
-    s->p = P;
-    s->n = unit_vector(n);
-    return true;
+bool Triangle::intersect( const Ray& r, SurfaceInteraction *s) const 
+{
+  float epsilon = 0.000001, det, inv_det;
+  float u, v, t;
+  Vec3 edge1 = v1 - v0;
+  Vec3 edge2 = v2 - v0;
+  Vec3 N = unit_vector( cross(edge1, edge2));
+  s->n = N;
+  Vec3 pvec = cross(r.direction(), edge2);
+
+  det = dot(edge1, pvec);
+  if (culling) {
+    if (det < epsilon)
+      return false;
+    Vec3 tvec = r.origin() - v0;
+    u = dot(tvec, pvec);
+    if (u < 0.0 or u > det )
+      return false;
+    Vec3 qvec = cross(tvec, edge1);
+    v = dot(r.direction(), qvec);
+    if (v < 0.0 or u + v > det)
+      return false;
+    t = dot(edge2, qvec);
+    inv_det = 1.0 / det;
+    t *= inv_det;
+    u *= inv_det;
+    v *= inv_det;
+  }
+  else {
+    if (det > -epsilon and det < epsilon)
+      return false;
+    inv_det = 1.0 / det;
+    Vec3 tvec = r.origin() - v0;
+    u = dot(tvec, pvec) * inv_det;
+    if (u < 0.0 or u > 1.0)
+      return false;
+    Vec3 qvec = cross(tvec, edge1);
+    v = dot(r.direction(), qvec) * inv_det;
+    if (v < 0.0 or u + v > 1.0)
+      return false;
+    t  = dot(edge2, qvec) * inv_det;
+  }
+  Vec3 P = (1.0 - u - v)*v0 + u*v1 + v*v2;
+  s->p = P;
+  return true;
 }
 /**
  * @brief Simpler & faster version of intersection that only 
@@ -52,24 +75,46 @@ bool Triangle::intersect( const Ray& r, SurfaceInteraction *s)
  * @return True if the ray intersects the object, false 
  * otherwise.
  */
-bool Triangle::intersect_p( const Ray& r ) const {
-    Vec3 v = v1 - v0;
-    Vec3 u = v2 - v1;
-    Vec3 n = cross(v, u);
-    float Area = n.length();
-    float t;// the t parameter for the ray
-    Point3 p0 = v0;
-    Point3 l0 = r.origin();
-    Point3 l = r.direction();
-    t = dot((p0 - l0), n) / dot(l, n);
-    Point3 P = r.origin() + t*r.direction();
-    float x = cross((P-v0),(P-v1)).length() / Area;
-    if (x < 0.0f ) return false;
-    float y = cross((P-v1),(P-v2)).length() / Area;
-    if (y < 0.0f ) return false;
-    float z = cross((P-v2),(P-v0)).length() / Area;
-    if (z < 0.0f ) return false;
-    
-    return true;
+bool Triangle::intersect_p( const Ray& r ) const 
+{
+  float epsilon = 0.000001, det, inv_det;
+  float u, v, t;
+  Vec3 edge1 = v1 - v0;
+  Vec3 edge2 = v2 - v0;
+  Vec3 pvec = cross(r.direction(), edge2);
+
+  det = dot(edge1, pvec);
+  if (culling) {
+    if (det < epsilon)
+      return false;
+    Vec3 tvec = r.origin() - v0;
+    u = dot(tvec, pvec);
+    if (u < 0.0 or u > det )
+      return false;
+    Vec3 qvec = cross(tvec, edge1);
+    v = dot(r.direction(), qvec);
+    if (v < 0.0 or u + v > det)
+      return false;
+    t = dot(edge2, qvec);
+    inv_det = 1.0 / det;
+    t *= inv_det;
+    u *= inv_det;
+    v *= inv_det;
+  }
+  else {
+    if (det > -epsilon and det < epsilon)
+      return false;
+    inv_det = 1.0 / det;
+    Vec3 tvec = r.origin() - v0;
+    u = dot(tvec, pvec) * inv_det;
+    if (u < 0.0 or u > 1.0)
+      return false;
+    Vec3 qvec = cross(tvec, edge1);
+    v = dot(r.direction(), qvec) * inv_det;
+    if (v < 0.0 or u + v > 1.0)
+      return false;
+    t  = dot(edge2, qvec) * inv_det;
+  }
+  return true;
 }
 
