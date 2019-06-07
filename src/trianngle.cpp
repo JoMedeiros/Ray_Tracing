@@ -5,7 +5,7 @@
  * @brief
  * @date
  *  Created:  03 jun 2019
- *  Last Update: 06 jun 2019 (14:48:36)
+ *  Last Update: 07 jun 2019 (16:11:18)
  */
 #include "triangle.h"
 
@@ -27,10 +27,12 @@ bool Triangle::intersect( const Ray& r, SurfaceInteraction *s) const
   Vec3 edge2 = v2 - v0;
   Vec3 N = unit_vector( cross(edge1, edge2));
   s->n = N;
+  //cout << N << "\n";
   Vec3 pvec = cross(r.direction(), edge2);
 
   det = dot(edge1, pvec);
   if (culling) {
+    cout << "culling on\n";
     if (det < epsilon)
       return false;
     Vec3 tvec = r.origin() - v0;
@@ -60,6 +62,7 @@ bool Triangle::intersect( const Ray& r, SurfaceInteraction *s) const
     if (v < 0.0 or u + v > 1.0)
       return false;
     t  = dot(edge2, qvec) * inv_det;
+    if (t < 0) return false;
   }
   Vec3 P = (1.0 - u - v)*v0 + u*v1 + v*v2;
   s->p = P;
@@ -114,6 +117,7 @@ bool Triangle::intersect_p( const Ray& r ) const
     if (v < 0.0 or u + v > 1.0)
       return false;
     t  = dot(edge2, qvec) * inv_det;
+    if (t < 0) return false;
   }
   return true;
 }

@@ -8,9 +8,9 @@ camera:
   type: "perspective"
   name: "cam_flat"
   # The camera frame 
-  position: [ 0, 5, 5 ] # located at the origin 
-  target: [ 0, 0, -10.0 ] # looking down the -Z axis 
-  up: [ 0, 1, 1 ]       # the camera's up vector 
+  position: [ 5, 4, -3.0 ] # located at the origin 
+  target: [ 0, 1, -5.0 ] # looking down the -Z axis 
+  up: [ 0, 1, 0 ]       # the camera's up vector 
   #--- Specific parameters for perspective projection 
   fovy: 45.0            # The vertical field of view 
   aspect: 1.33          # Optional parameter, aspect ration W/H 
@@ -26,31 +26,36 @@ scene:
     - type: "ambient"
       name: "ambient_light"
       intensity: [ 1.0, 1.0, 1.0 ]
-      #- type: "point"
-      #  name: "point_light"
-      #  intensity: [ 0.7, 0.7, 0.7 ]
-      #  position: [ 1.2, 12.1, -2.0 ]
-      #- type: "point"
-      #  name: "point_light"
-      #  intensity: [ 0.2, 0.7, 0.2 ]
-      #  position: [ 1.0, 3.9, -4.0 ]
+    - type: "point"
+      name: "point_light"
+      intensity: [ 0.5, 0.5, 0.5 ]
+      position: [ 1.2, 12.1, -2.0 ]
+    - type: "point"
+      name: "point_light"
+      intensity: [ 0.1, 0.5, 0.1 ]
+      position: [ 1.0, 9.9, -4.0 ]
       #- type: "point"
       #  name: "point_light"
       #  intensity: [ 0.7, 0.2, 0.2 ]
       #  position: [ -2.2, 3.9, -4.0 ]
     - type: "directional"
       name: "point_light"
-      intensity: [ 0.9, 0.9, 0.9 ]
+      intensity: [ 0.5, 0.5, 0.5 ]
       direction: [ -1.2, -1.1, 0.0 ]
   #-- Objects
   objects:
     - type: "triangle"
       name: "triangle"
       material: "redish"
-      radius: 0.4
-      v0: [ 0.0, 0.4, 0.0 ]
-      v1: [ 1.0, 0.4, -4.0 ]
-      v2: [ -1.0, 0.4, -3.5 ]
+      v0: [ 0.0, 2.0, -4.5 ]
+      v1: [ 1.0, 2.2, -6.0 ]
+      v2: [ -1.0, 2.2, -6.0 ]
+    - type: "triangle"
+      name: "triangle"
+      material: "redish"
+      v0: [ 0.0, 3.0, -6.0 ]
+      v1: [ 1.0, 2.2, -6.0 ]
+      v2: [ -1.0, 2.2, -6.0 ]
 
     - type: "sphere" 
       name: "sphere1"
@@ -80,7 +85,7 @@ scene:
     - type: "blinn"
       name: "redish"
       ambient: [ 0.1, 0.1, 0.1 ]
-      diffuse: [ 0.9, 0.2, 0.1 ]
+      diffuse: [ 0.9, 0.0, 0.0 ]
       specular: [ 0.8, 0.8, 0.8 ]
       glossiness: 64
 
@@ -104,17 +109,6 @@ scene:
       diffuse: [ 0.8, 0.8, 0.8 ]
       specular: [ 0.9, 0.9, 0.9 ]
       glossiness: 128
-
-  #!-- Lights -->
-  lights:
-    - type: "ambient"
-      name: "ambient_light"
-      intensity: [ 0.1, 0.1, 0.1 ]
-
-    - type: "point"
-      name: "point_light"
-      intensity: [ 0.7, 0.7, 0.7, ]
-      position: [ 0, 1.1, -1.0 ]
 
 running: # Running setup --->
   integrator: 
