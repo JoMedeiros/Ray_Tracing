@@ -38,6 +38,7 @@ class Renderer
     void run();
     void setup( string file );
     Vec3 load_vec(const YAML::Node & node);
+    Vec2 load_vec2(const YAML::Node & node);
     Color load_color(const YAML::Node & color_node);
     void setup_bg(const YAML::Node & bg);
     void setup_camera(const YAML::Node & camera);

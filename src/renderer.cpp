@@ -4,7 +4,7 @@
  * @version	1
  * @date
  *  Created:  12 may 2019
- *  Last Update: 06 jun 2019 (15:00:56)
+ *  Last Update: 13 jun 2019 (20:08:45)
  */
 #include "renderer.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -20,6 +20,122 @@
 
 using namespace std;
 
+/**
+ * @brief Sets the scene
+ */
+void Renderer::setup_scene(const YAML::Node & scene) {
+  map<string, shared_ptr<Material>> mat_lib;
+  auto materials = scene["materials"];
+  try {
+    for (auto obj=materials.begin();obj!=materials.end();++obj) {
+      string type = (*obj)["type"].as<string>();
+      if (type.compare("flat") == 0) {
+        Color color = load_vec((*obj)["diffuse"]);
+        string mat_name = (*obj)["name"].as<string>();
+        mat_lib[mat_name] = shared_ptr<FlatMaterial>(
+            new FlatMaterial(color));
+      }
+      else if (type.compare("blinn") == 0) {
+        string mat_name = (*obj)["name"].as<string>();
+        Color ka = load_vec((*obj)["ambient"]);
+        Color kd = load_vec((*obj)["diffuse"]);
+        Color ks = load_vec((*obj)["specular"]);
+        float glossiness = (*obj)["glossiness"].as<float>();
+        mat_lib[mat_name] = shared_ptr<BlinnPhongMaterial>(
+          new BlinnPhongMaterial( ka, kd, ks, glossiness ));
+      }
+    }
+  }
+  catch (exception & e) {
+    cerr << "Error loading materials\n";
+    cerr << e.what();
+  }
+  try {
+    auto objects = scene["objects"];
+    for (auto obj = objects.begin(); obj != objects.end(); ++obj) {
+      string type = (*obj)["type"].as<string>();
+      if (type.compare("sphere") == 0) {
+        string name = (*obj)["name"].as<string>();
+        string mat = (*obj)["material"].as<string>();
+        float radius = (*obj)["radius"].as<float>();
+        Vec3 center = load_vec((*obj)["center"]);
+        Sphere* sp = new Sphere(center, radius);
+        GeometricPrimitive * gp = new GeometricPrimitive(sp);
+        if (auto mate = mat_lib[mat])
+          gp->set_material(mat_lib[mat]);
+        else throw invalid_argument("material not in library\n");
+        this->add_primitive(gp);
+      }
+      /*else if (type.compare("triangle") == 0) {
+        string name = (*obj)["name"].as<string>();
+        string mat = (*obj)["material"].as<string>();
+        Vec3 p0 = load_vec((*obj)["v0"]);
+        Vec3 p1 = load_vec((*obj)["v1"]);
+        Vec3 p2 = load_vec((*obj)["v2"]);
+        Triangle* t = new Triangle(p0, p1, p2);
+        GeometricPrimitive * gp = new GeometricPrimitive(t);
+        if (auto mate = mat_lib[mat]) 
+          gp->set_material(mat_lib[mat]);
+        else throw invalid_argument("Integrator is not valid. The"
+            " valid integrators are:\nflat\nnormal\ndepth_map\n");
+        this->add_primitive(gp);
+      }*/
+      else if (type.compare("trianglemesh") == 0) {
+        string name = (*obj)["name"].as<string>();
+        string mat = (*obj)["material"].as<string>();
+        int nTri = (*obj)["ntriangles"].as<int>();
+        auto is = (*obj)["indices"];
+        auto vs = (*obj)["vertices"];
+        auto ns = (*obj)["normals"];
+        auto uvs = (*obj)["uv"];
+        int indices[is.size()];
+        Vec3 vertices[vs.size()];
+        Vec3 normals[nTri];
+        Vec2 uv_s[uvs.size()];
+        for (size_t i=0; i < is.size();i++){
+          indices[i] = is[i].as<int>();
+        }
+        int i = 0;
+        for (size_t i=0; i < ns.size();i++) {
+          normals[i] = load_vec(ns[i]);
+        }
+        for (auto v = vs.begin(); v != vs.end(); ++v) {
+          vertices[i] = load_vec(*v);
+          cout << "vertice " << i << ": " << vertices[i] << "\n";
+          ++i;
+        }
+        cout << "vertices in renderer.cpp:\n";
+        for (int i=0;i < 4; ++i)
+          cout << vertices[i] << "\n";
+
+        i = 0;
+        for (auto uv = uvs.begin(); uv != uvs.end(); ++uv) {
+          uv_s[i] = load_vec2(*uv);
+          ++i;
+        }
+        //TriangleMesh tm( nTri, indices, vs.size(), vertices, 
+            //normals, uv_s );
+        shared_ptr<TriangleMesh> tm_ptr(
+              new TriangleMesh( nTri, indices, vs.size(), 
+                vertices, normals, uv_s ) );
+        for (int i=0; i < nTri; i++) {
+          Triangle* t = new Triangle( tm_ptr, i );
+          GeometricPrimitive * gp = new GeometricPrimitive(t);
+          if (auto mate = mat_lib[mat])
+            gp->set_material(mat_lib[mat]);
+          else throw invalid_argument("material not in library\n");
+          this->add_primitive(gp);
+          cout << "triangle added in renderer.cpp\n";
+        }
+      }
+    }
+  }
+  catch (exception & e) {
+    cerr << "Error loading objects\n";
+    cerr << e.what();
+  }
+  setup_lights(scene["lights"]);
+}
 /**
  * @brief Default Constructor
  */
@@ -63,6 +179,25 @@ Vec3 Renderer::load_vec(const YAML::Node & node) {
   else if (node.Type() == YAML::NodeType::Sequence) {
     v = Vec3(node[0].as<float>(), node[1].as<float>(),
         node[2].as<float>());
+  }
+  return v;
+}
+/**
+ * @brief Loads a Vec2 described in a yaml node
+ *
+ * @param node  The node reference in the format:
+ *
+ * [ x, y ]
+ * or:
+ * - x
+ * - y
+ *
+ * @return  A Vec2 object initialized with {x, y}
+ */
+Vec2 Renderer::load_vec2(const YAML::Node & node) {
+  Vec2 v;
+  if (node.Type() == YAML::NodeType::Sequence) {
+    v = Vec2(node[0].as<float>(), node[1].as<float>());
   }
   return v;
 }
@@ -160,75 +295,6 @@ void Renderer::setup_camera(const YAML::Node & camera) {
     cerr << "Error parsing Camera:\n";
     cerr << e.what();
   }
-}
-/**
- * @brief Sets the scene
- */
-void Renderer::setup_scene(const YAML::Node & scene) {
-  map<string, shared_ptr<Material>> mat_lib;
-  auto materials = scene["materials"];
-  try {
-    for (auto obj=materials.begin();obj!=materials.end();++obj) {
-      string type = (*obj)["type"].as<string>();
-      if (type.compare("flat") == 0) {
-        Color color = load_vec((*obj)["diffuse"]);
-        string mat_name = (*obj)["name"].as<string>();
-        mat_lib[mat_name] = shared_ptr<FlatMaterial>(
-            new FlatMaterial(color));
-      }
-      else if (type.compare("blinn") == 0) {
-        string mat_name = (*obj)["name"].as<string>();
-        Color ka = load_vec((*obj)["ambient"]);
-        Color kd = load_vec((*obj)["diffuse"]);
-        Color ks = load_vec((*obj)["specular"]);
-        float glossiness = (*obj)["glossiness"].as<float>();
-        mat_lib[mat_name] = shared_ptr<BlinnPhongMaterial>(
-          new BlinnPhongMaterial( ka, kd, ks, glossiness ));
-      }
-    }
-  }
-  catch (exception & e) {
-    cerr << "Error loading materials\n";
-    cerr << e.what();
-  }
-  try {
-    auto objects = scene["objects"];
-    for (auto obj = objects.begin(); obj != objects.end(); ++obj) {
-      string type = (*obj)["type"].as<string>();
-      if (type.compare("sphere") == 0) {
-        string name = (*obj)["name"].as<string>();
-        string mat = (*obj)["material"].as<string>();
-        float radius = (*obj)["radius"].as<float>();
-        Vec3 center = load_vec((*obj)["center"]);
-        Sphere* sp = new Sphere(center, radius);
-        GeometricPrimitive * gp = new GeometricPrimitive(sp);
-        if (auto mate = mat_lib[mat])
-          gp->set_material(mat_lib[mat]);
-        else throw invalid_argument("Integrator is not valid. The"
-            " valid integrators are:\nflat\nnormal\ndepth_map\n");
-        this->add_primitive(gp);
-      }
-      else if (type.compare("triangle") == 0) {
-        string name = (*obj)["name"].as<string>();
-        string mat = (*obj)["material"].as<string>();
-        Vec3 p0 = load_vec((*obj)["v0"]);
-        Vec3 p1 = load_vec((*obj)["v1"]);
-        Vec3 p2 = load_vec((*obj)["v2"]);
-        Triangle* t = new Triangle(p0, p1, p2);
-        GeometricPrimitive * gp = new GeometricPrimitive(t);
-        if (auto mate = mat_lib[mat]) 
-          gp->set_material(mat_lib[mat]);
-        else throw invalid_argument("Integrator is not valid. The"
-            " valid integrators are:\nflat\nnormal\ndepth_map\n");
-        this->add_primitive(gp);
-      }
-    }
-  }
-  catch (exception & e) {
-    cerr << "Error loading objects\n";
-    cerr << e.what();
-  }
-  setup_lights(scene["lights"]);
 }
 /**
  * @brief Parses the lights node in yml file and sets the lights.
