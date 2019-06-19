@@ -69,9 +69,6 @@ class Triangle : public Shape {
       bool bfc=true ) : Shape(), mesh{_mesh}, backface_cull{bfc}, 
       id{tri_id}{ 
         this->v = &(_mesh->vertexIndices[ 3 * tri_id ]); 
-        cout << "Mesh\n";
-        for (int i = 0 ; i < 4 ; ++i)
-        cout << "Vert: " << _mesh->points[i] << "\n";
       }
 		// Return the triangle's bounding box.
 		Bounds3f object_bound() const;

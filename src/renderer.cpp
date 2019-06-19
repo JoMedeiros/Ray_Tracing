@@ -4,7 +4,7 @@
  * @version	1
  * @date
  *  Created:  12 may 2019
- *  Last Update: 13 jun 2019 (20:08:45)
+ *  Last Update: 18 jun 2019 (09:22:28)
  */
 #include "renderer.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -17,6 +17,9 @@
 #include "ambientLight.h"
 #include "pointLight.h"
 #include "directionalLight.h"
+#include "cyCore.h"
+#include "cyPoint.h"
+#include "cyTriMesh.h"
 
 using namespace std;
 
@@ -66,67 +69,105 @@ void Renderer::setup_scene(const YAML::Node & scene) {
         else throw invalid_argument("material not in library\n");
         this->add_primitive(gp);
       }
-      /*else if (type.compare("triangle") == 0) {
-        string name = (*obj)["name"].as<string>();
-        string mat = (*obj)["material"].as<string>();
-        Vec3 p0 = load_vec((*obj)["v0"]);
-        Vec3 p1 = load_vec((*obj)["v1"]);
-        Vec3 p2 = load_vec((*obj)["v2"]);
-        Triangle* t = new Triangle(p0, p1, p2);
-        GeometricPrimitive * gp = new GeometricPrimitive(t);
-        if (auto mate = mat_lib[mat]) 
-          gp->set_material(mat_lib[mat]);
-        else throw invalid_argument("Integrator is not valid. The"
-            " valid integrators are:\nflat\nnormal\ndepth_map\n");
-        this->add_primitive(gp);
-      }*/
       else if (type.compare("trianglemesh") == 0) {
-        string name = (*obj)["name"].as<string>();
-        string mat = (*obj)["material"].as<string>();
-        int nTri = (*obj)["ntriangles"].as<int>();
-        auto is = (*obj)["indices"];
-        auto vs = (*obj)["vertices"];
-        auto ns = (*obj)["normals"];
-        auto uvs = (*obj)["uv"];
-        int indices[is.size()];
-        Vec3 vertices[vs.size()];
-        Vec3 normals[nTri];
-        Vec2 uv_s[uvs.size()];
-        for (size_t i=0; i < is.size();i++){
-          indices[i] = is[i].as<int>();
-        }
-        int i = 0;
-        for (size_t i=0; i < ns.size();i++) {
-          normals[i] = load_vec(ns[i]);
-        }
-        for (auto v = vs.begin(); v != vs.end(); ++v) {
-          vertices[i] = load_vec(*v);
-          cout << "vertice " << i << ": " << vertices[i] << "\n";
-          ++i;
-        }
-        cout << "vertices in renderer.cpp:\n";
-        for (int i=0;i < 4; ++i)
-          cout << vertices[i] << "\n";
+        if ((*obj)["filename"].Type()== YAML::NodeType::Scalar){
+          string fmesh = (*obj)["filename"].as<string>();
+          cout << "Loading from file" << fmesh << "\n";
+          cy::TriMesh tri;
+          tri.LoadFromFileObj(fmesh.c_str());
+          Point3* vertices = new Point3[tri.NV()];
+          Vec3* normals = new Vec3[tri.NF()];
+          Vec2* uv_s = new Vec2[tri.NF()];
+          int* indices = new int[3*tri.NF()];
+          for (size_t i=0; i < tri.NV(); ++i) {
+            cy::Point3<float> p = tri.V(i);
+            vertices[i] = Point3( p[0], p[1], p[2]);
+          }
+          for (size_t i=0; i < tri.NV(); ++i) {
+            cy::TriMesh::TriFace f = tri.F(i);
+            for (size_t j=0; j < 3; ++j)
+              indices[3*i+j] = f.v[j];
+          }
+          cout << "Testing if vertices were initialized:\n";
+          for (size_t i=0; i < 3*tri.NV(); ++i) {
+            cout << "\t| | |" << vertices[indices[i]] << "\n";
+          }
 
-        i = 0;
-        for (auto uv = uvs.begin(); uv != uvs.end(); ++uv) {
-          uv_s[i] = load_vec2(*uv);
-          ++i;
+          shared_ptr<TriangleMesh> tm_ptr(
+              new TriangleMesh( tri.NF(), indices, tri.NV(), 
+                vertices, normals, uv_s ) );
+          for (size_t i=0; i < 172; i++) {
+            Triangle* t = new Triangle( tm_ptr, i );
+            GeometricPrimitive * gp = new GeometricPrimitive(t);
+            if ((*obj)["material"].Type()== YAML::NodeType::Scalar)
+              gp->set_material(mat_lib[(*obj)["material"].as<string>()]);
+            else if (tri.NM() > 0){
+              auto mat = tri.M(tri.GetMaterialIndex(i));
+              Vec3 ka(mat.Ka[0], mat.Ka[1], mat.Ka[2]);
+              Vec3 kd(mat.Kd[0], mat.Kd[1], mat.Kd[2]);
+              Vec3 ks(mat.Ks[0], mat.Ks[1], mat.Ks[2]);
+              float glossiness = mat.illum;
+              gp->set_material(shared_ptr<BlinnPhongMaterial>(
+                new BlinnPhongMaterial( ka, kd, ks, glossiness )));
+            }
+            else throw invalid_argument("material not in library\n");
+            this->add_primitive(gp);
+          }
+          cout << "\t>>>All the " << tri.NF() << " triangles have been added\n";
+          cout << "\t>>>All the " << tri.NV() <<" vertices have been added\n";
         }
-        //TriangleMesh tm( nTri, indices, vs.size(), vertices, 
-            //normals, uv_s );
-        shared_ptr<TriangleMesh> tm_ptr(
+        else {
+          cout << "Loading mesh from yaml \n";
+          string name = (*obj)["name"].as<string>();
+          string mat = (*obj)["material"].as<string>();
+          int nTri = (*obj)["ntriangles"].as<int>();
+          auto is = (*obj)["indices"];
+          auto vs = (*obj)["vertices"];
+          auto ns = (*obj)["normals"];
+          auto uvs = (*obj)["uv"];
+          int indices[is.size()];
+          Point3 vertices[vs.size()];
+          Vec3 normals[nTri];
+          Vec2 uv_s[uvs.size()];
+          for (size_t i=0; i < is.size();i++){
+            indices[i] = is[i].as<int>();
+          }
+          int i = 0;
+          for (size_t i=0; i < ns.size();i++) {
+            normals[i] = load_vec(ns[i]);
+          }
+          for (auto v = vs.begin(); v != vs.end(); ++v) {
+            vertices[i] = load_vec(*v);
+            cout << "vertice " << i << ": " << vertices[i] << "\n";
+            ++i;
+          }
+          cout << "vertices in renderer.cpp:\n";
+          for (int i=0;i < 4; ++i)
+            cout << vertices[i] << "\n";
+
+          i = 0;
+          for (auto uv = uvs.begin(); uv != uvs.end(); ++uv) {
+            uv_s[i] = load_vec2(*uv);
+            ++i;
+          }
+          //TriangleMesh tm( nTri, indices, vs.size(), vertices, 
+          //normals, uv_s );
+          shared_ptr<TriangleMesh> tm_ptr(
               new TriangleMesh( nTri, indices, vs.size(), 
                 vertices, normals, uv_s ) );
-        for (int i=0; i < nTri; i++) {
-          Triangle* t = new Triangle( tm_ptr, i );
-          GeometricPrimitive * gp = new GeometricPrimitive(t);
-          if (auto mate = mat_lib[mat])
-            gp->set_material(mat_lib[mat]);
-          else throw invalid_argument("material not in library\n");
-          this->add_primitive(gp);
-          cout << "triangle added in renderer.cpp\n";
+          for (int i=0; i < nTri; i++) {
+            Triangle* t = new Triangle( tm_ptr, i );
+            GeometricPrimitive * gp = new GeometricPrimitive(t);
+            if (auto mate = mat_lib[mat])
+              gp->set_material(mat_lib[mat]);
+            else throw invalid_argument("material not in library\n");
+            this->add_primitive(gp);
+            cout << "triangle added in renderer.cpp\n";
+          }
         }
+      }
+      else {
+        throw invalid_argument ("object type is not recognized\n");
       }
     }
   }

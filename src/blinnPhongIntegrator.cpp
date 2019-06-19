@@ -21,7 +21,13 @@ Color BlinnPhongIntegrator::Li( const Ray& ray, const Scene& scene,
   // Find closest ray intersection or return background radiance.
   SurfaceInteraction si;  
   if (!scene.intersect(ray, &si)) {
-    L = scene.bg->sample(1,1); //TODO implement bg sample with ray
+    float y = (1 + unit_vector(ray.direction()).y())/2;
+    Vec3 xz = unit_vector(Vec3(ray.direction().x(), 0, ray.direction().z()));
+    float v = 2*asin(y)/3.1415926535;
+    float u = xz.x() < 0 ? acos(xz.z()) : 2*3.1415926535 - acos(xz.z());
+    u /= 2*3.1415926535;
+    cout << "\t\t>>> Value of u:" << u << "\n\n";
+    L = scene.bg->sample(v,u); //TODO implement bg sample with ray
   }
   else {
     BlinnPhongMaterial *bfm=dynamic_cast<BlinnPhongMaterial*>(

@@ -46,6 +46,7 @@ on the normals of objects (like a normal map).
 
 ### TODOS
 
+- [ ] Load triangle Mesh from .obj file 
 - [x] Set output file name from the yaml file
 - [x] Choose file format from yaml file
 - [x] Set integrator in yaml file

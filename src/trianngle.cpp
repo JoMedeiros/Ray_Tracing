@@ -24,11 +24,8 @@ bool Triangle::intersect( const Ray& r, SurfaceInteraction *s) const
   float epsilon = 0.000001, det, inv_det;
   float u, v, t;
   Vec3 v0 = this->mesh->points[this->v[0]];
-  //cout << "v0(" << this->v[0] << "): " << this->mesh->points[0] << "\n";
   Vec3 v1 = this->mesh->points[this->v[1]];
-  //cout << "v1: " << this->mesh->points[1] << "\n";
   Vec3 v2 = this->mesh->points[this->v[2]];
-  //cout << this->mesh->points[2] << "\n";
   Vec3 edge1 = v1 - v0;
   Vec3 edge2 = v2 - v0;
   Vec3 N = unit_vector( cross(edge1, edge2));
@@ -71,7 +68,6 @@ bool Triangle::intersect( const Ray& r, SurfaceInteraction *s) const
   }
   Vec3 P = (1.0 - u - v)*v0 + u*v1 + v*v2;
   s->p = P;
-  //cout << P << "\n";
   return true;
 }
 /**
