@@ -4,10 +4,12 @@
  * @version	1
  * @date
  *  Created:  12 may 2019
- *  Last Update: 18 jun 2019 (09:22:28)
+ *  Last Update: 20 jun 2019 (11:05:18)
  */
 #include "renderer.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include "stb_image_write.h"
 #include <algorithm>
 #include <memory>
@@ -282,6 +284,9 @@ void Renderer::setup_bg(const YAML::Node & bg){
       }
       scene->bg = new Background(colors_arr[0], colors_arr[1], colors_arr[2], 
           colors_arr[3]);
+    }
+    else if ( YAML::Node img = bg["image"] ){
+      scene->bg = new Background (img.as<string>());
     }
     else {
       scene->bg = new Background(Color(255,255,255));

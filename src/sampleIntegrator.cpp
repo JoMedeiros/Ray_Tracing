@@ -14,7 +14,11 @@ void SampleIntegrator::render(const Scene& scene) {
   // TODO This might just be a tile (part) of an image, rendered in parallel.
   int w = scene.buffer->width();
   int h = scene.buffer->height();
+  float total = w * h;
 
+  cout << "Rendering pixels\n[";
+  int counter = 0;
+  int bar = 0; // 0 -- 100 %
 	for ( int j = h-1; j >= 0; --j ) {
 		for ( int i = 0; i < w; ++i ) {
 			float v = float(i) / float(w), 
@@ -23,6 +27,12 @@ void SampleIntegrator::render(const Scene& scene) {
       Sampler sampler(1);
       Color L = Li( ray, scene, sampler );
       scene.buffer->paint( i, j, L );
+      if (100*(counter/total) > bar){
+        cout << "=";
+        ++bar;
+      }
+      ++counter;
     }
 	}
+  cout <<"]\n";
 }

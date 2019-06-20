@@ -1,25 +1,26 @@
 background: # This defines an interpolated background
-  colors:
-    - [ 153, 204, 255 ] # bottom left
-    - [  18,  10, 143 ] # top left
-    - [  18,  10, 143 ] # top right
-    - [ 153, 204, 255 ] # bottom right -->
+  image: "sphericalMap.jpg"
+#  colors:
+#    - [  255,  255, 255 ] # top left
+#    - [ 0, 50, 255 ] # bottom left
+#    - [ 0, 50, 255 ] # bottom right -->
+#    - [  255,  255, 255 ] # top right
 
 camera: 
   type: "perspective"
   name: "cam_flat"
   # The camera frame 
-  position: [ 0, 25, -25.0 ] # located at the origin 
-  target: [ 0, 0, -2.0 ] # looking down the -Z axis 
+  position: [ 0, 2, 25.0 ] # located at the origin 
+  target: [ 0, 2, -20.0 ] # looking down the -Z axis 
   up: [ 0, 1, 0 ]       # the camera's up vector 
   #--- Specific parameters for perspective projection 
   fovy: 45.0            # The vertical field of view 
   aspect: 1.33          # Optional parameter, aspect ration W/H 
   fdistance: 1          # The focal distance  
   #--- Retina/image dimensions 
-  width: 300
-  height: 175
-  img_file: { name: "triangle_example", type: "png" }
+  width: 665
+  height: 500
+  img_file: { name: "trianglemesh", type: "png" }
 
 scene:
   #-- Lights 
