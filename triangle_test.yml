@@ -1,0 +1,129 @@
+background: # This defines an interpolated background
+  colors:
+    - [ 153, 204, 255 ] # bottom left
+    - [  18,  10, 143 ] # top left
+    - [  18,  10, 143 ] # top right
+    - [ 153, 204, 255 ] # bottom right -->
+
+camera: 
+  type: "perspective"
+  name: "cam_flat"
+  # The camera frame 
+  position: [ 5, 4, -3.0 ] # located at the origin 
+  target: [ 0, 1, -5.0 ] # looking down the -Z axis 
+  up: [ 0, 1, 0 ]       # the camera's up vector 
+  #--- Specific parameters for perspective projection 
+  fovy: 45.0            # The vertical field of view 
+  aspect: 1.33          # Optional parameter, aspect ration W/H 
+  fdistance: 1          # The focal distance  
+  #--- Retina/image dimensions 
+  width: 1000
+  height: 750
+  img_file: { name: "triangle_example", type: "png" }
+
+scene:
+  #-- Lights 
+  lights:
+    - type: "ambient"
+      name: "ambient_light"
+      intensity: [ 1.0, 1.0, 1.0 ]
+    - type: "point"
+      name: "point_light"
+      intensity: [ 0.5, 0.5, 0.5 ]
+      position: [ 1.2, 12.1, -2.0 ]
+    - type: "point"
+      name: "point_light"
+      intensity: [ 0.1, 0.5, 0.1 ]
+      position: [ 1.0, 9.9, -4.0 ]
+      #- type: "point"
+      #  name: "point_light"
+      #  intensity: [ 0.7, 0.2, 0.2 ]
+      #  position: [ -2.2, 3.9, -4.0 ]
+    - type: "directional"
+      name: "point_light"
+      intensity: [ 0.5, 0.5, 0.5 ]
+      direction: [ -1.2, -1.1, 0.0 ]
+  #-- Objects
+  objects:
+    - type: "triangle"
+      name: "floor_1"
+      material: "white"
+      v0: [ -18.0, 0.0, -18.0 ]
+      v1: [ -18.0, 0.0, 0.0 ]
+      v2: [ 18.0, 0.0, 0.0 ]
+
+    - type: "triangle"
+      name: "floor_2"
+      material: "white"
+      v0: [ 18.0, 0.0, 0.0 ]
+      v1: [ 18.0, 0.0, -18.0 ]
+      v2: [ -18.0, 0.0, -18.0 ]
+
+    - type: "triangle"
+      name: "triangle"
+      material: "redish"
+      v1: [ 1.0, 2.2, -6.0 ]
+      v2: [ -1.0, 2.2, -6.0 ]
+      v0: [ 0.0, 2.0, -4.5 ]
+
+    - type: "triangle"
+      name: "triangle"
+      material: "redish"
+      v0: [ -1.0, 2.2, -6.0 ]
+      v1: [ 1.0, 2.2, -6.0 ]
+      v2: [ 0.0, 3.0, -6.0 ]
+
+    - type: "sphere" 
+      name: "sphere1"
+      material: "greenish"
+      radius: 0.4
+      center: [ 0.0, 0.4, 0.0 ]
+
+    - type: "sphere"
+      name: "sphere2"
+      material: "redish"
+      radius: 0.4
+      center: [ 1.0, 0.4, -4.0 ]
+
+    - type: "sphere" 
+      name: "sphere3"
+      material: "greenish"
+      radius: 0.4
+      center: [ -1.0, 0.4, -3.5 ]
+
+  #--- Library of materials --
+  materials:
+    - type: "blinn"
+      name: "redish"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.9, 0.0, 0.0 ]
+      specular: [ 0.8, 0.8, 0.8 ]
+      glossiness: 64
+
+    - type: "blinn"
+      name: "greenish"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.2, 0.9, 0.2 ]
+      specular: [ 0.8, 0.8, 0.8 ]
+      glossiness: 256
+
+    - type: "blinn"
+      name: "blueish"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.1, 0.2, 0.9 ]
+      specular: [ 0.8, 0.8, 0.8 ]
+      glossiness: 32
+
+    - type: "blinn"
+      name: "white"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.8, 0.8, 0.8 ]
+      specular: [ 0.9, 0.9, 0.9 ]
+      glossiness: 128
+
+running: # Running setup --->
+  integrator: 
+    type: "blinn_phong"
+    spp value: 1
+    depth value: 1
+

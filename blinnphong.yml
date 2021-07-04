@@ -1,0 +1,116 @@
+background: # This defines an interpolated background
+  colors:
+    - [ 153, 204, 255 ] # bottom left
+    - [  18,  10, 143 ] # top left
+    - [  18,  10, 143 ] # top right
+    - [ 153, 204, 255 ] # bottom right -->
+camera: 
+  type: "perspective"
+  name: "cam_flat"
+  # The camera frame 
+  position: [ 0, 5, 5 ] # located at the origin 
+  target: [ 0, 0, -10.0 ] # looking down the -Z axis 
+  up: [ 0, 1, 1 ]       # the camera's up vector 
+  #--- Specific parameters for perspective projection 
+  fovy: 45.0            # The vertical field of view 
+  aspect: 1.33          # Optional parameter, aspect ration W/H 
+  fdistance: 1          # The focal distance  
+  #--- Retina/image dimensions 
+  width: 1000
+  height: 750
+  img_file: { name: "blinn_phong_example", type: "png" }
+
+scene:
+  #-- Lights 
+  lights:
+    - type: "directional"
+      name: "point_light"
+      intensity: [ 0.9, 0.9, 0.9 ]
+      direction: [ -1.2, -1.1, 0.0 ]
+      #- type: "ambient"
+      #  name: "ambient_light"
+      #  intensity: [ 1.0, 1.0, 1.0 ]
+    - type: "point"
+      name: "point_light"
+      intensity: [ 0.2, 0.7, 0.2 ]
+      position: [ 1.0, 3.9, -4.0 ]
+    - type: "point"
+      name: "point_light"
+      intensity: [ 0.7, 0.2, 0.2 ]
+      position: [ -2.2, 3.9, -4.0 ]
+
+  #-- Objects
+  objects:
+    - type: "sphere"
+      name: "sphere1"
+      material: "grey"
+      radius: 0.4
+      center: [ 1.2, 0.4, -2.0 ]
+
+    - type: "sphere"
+      name: "sphere2"
+      material: "redish"
+      radius: 0.4
+      center: [ 1.0, 0.4, -4.0 ]
+
+    - type: "sphere" 
+      name: "sphere3"
+      material: "greenish"
+      radius: 0.4
+      center: [ -1.0, 0.4, -3.5 ]
+
+    - type: "sphere" 
+      name: "sphere5"
+      material: "yellowish"
+      radius: 0.6
+      center: [ -1.5, 0.8, -3.5 ]
+
+    - type: "sphere" 
+      name: "sphere4"
+      material: "blueish"
+      radius: 5000
+      center: [ 0.0, -5000.0, -3.5 ]
+  #--- Library of materials --
+  materials:
+    - type: "blinn"
+      name: "redish"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.9, 0.2, 0.1 ]
+      specular: [ 0.8, 0.8, 0.8 ]
+      glossiness: 64
+
+    - type: "blinn"
+      name: "greenish"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.2, 0.9, 0.2 ]
+      specular: [ 0.8, 0.8, 0.8 ]
+      glossiness: 256
+
+    - type: "blinn"
+      name: "blueish"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.1, 0.2, 0.9 ]
+      specular: [ 0.8, 0.8, 0.8 ]
+      glossiness: 32
+
+    - type: "blinn"
+      name: "grey"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.8, 0.8, 0.8 ]
+      specular: [ 0.9, 0.9, 0.9 ]
+      glossiness: 128
+
+    - type: "blinn"
+      name: "yellowish"
+      ambient: [ 0.1, 0.1, 0.1 ]
+      diffuse: [ 0.8, 0.8, 0.0 ]
+      specular: [ 0.9, 0.9, 0.9 ]
+      glossiness: 128
+
+
+running: # Running setup --->
+  integrator: 
+    type: "blinn_phong"
+    spp value: 1
+    depth value: 1
+

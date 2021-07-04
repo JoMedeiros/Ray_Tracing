@@ -31,10 +31,10 @@ OPTIMIZE = -O03
 DEBUG = -g -D BACKTRACKING_PLAYER
 COMPILE_FLAGS = -std=c++11 -Wall -Wextra
 #COMPILE_FLAGS = -std=c++11 -Wall -Wextra -g
-INCLUDES = -I include/
+INCLUDES = -I include/ -I include/integrators -I include/lights
 #INCLUDES = -I include/ -I /usr/local/include
 # Space-separated pkg-config libraries used by this project
-LIBS =
+LIBS = -L lib/ -lyaml-cpp
 
 .PHONY: default_target
 default_target: release
@@ -74,7 +74,7 @@ all: $(BIN_PATH)/$(BIN_NAME)
 # Creation of the executable
 $(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
 	@echo "Linking: $@"
-	$(CXX) $(OBJECTS) -o $@
+	$(CXX) $(OBJECTS) -o $@ $(LIBS)
 
 # Add dependency files, if they exist
 -include $(DEPS)
